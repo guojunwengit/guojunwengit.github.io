@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>747.至少是其他数字两倍的最大数</title>
+      <link href="/2022/01/13/747-%E8%87%B3%E5%B0%91%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E4%B8%A4%E5%80%8D%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0/"/>
+      <url>/2022/01/13/747-%E8%87%B3%E5%B0%91%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E4%B8%A4%E5%80%8D%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0/</url>
+      
+        <content type="html"><![CDATA[<h3 id="747-至少是其他数字两倍的最大数"><a href="#747-至少是其他数字两倍的最大数" class="headerlink" title="747.至少是其他数字两倍的最大数"></a>747.至少是其他数字两倍的最大数</h3><p>给你一个整数数组 nums ，其中总是存在 唯一的 一个最大整数 。</p><p>请你找出数组中的最大元素并检查它是否 至少是数组中每个其他数字的两倍 。如果是，则返回 最大元素的下标 ，否则返回 -1 。</p><p><a href="https://leetcode-cn.com/problems/largest-number-at-least-twice-of-others/">https://leetcode-cn.com/problems/largest-number-at-least-twice-of-others/</a></p><h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h3><p>遍历数组分别找到数组的最大值 max1 和次大值 max2 。如果 max1 ≥ max2 × 2 成立，则最大值至少是数组其余数字的两倍，此时返回最大值的下标，否则返回 -1−1。</p><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">dominantIndex</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>max1<span class="token punctuation">,</span> max2<span class="token punctuation">,</span> k <span class="token operator">:=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token keyword">for</span> i<span class="token punctuation">,</span> num <span class="token operator">:=</span> <span class="token keyword">range</span> nums <span class="token punctuation">{</span><span class="token keyword">if</span> num <span class="token operator">&gt;</span> max1 <span class="token punctuation">{</span> max1<span class="token punctuation">,</span> max2<span class="token punctuation">,</span> k <span class="token operator">=</span> num<span class="token punctuation">,</span> max1<span class="token punctuation">,</span> i<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> num <span class="token operator">&gt;</span> max2<span class="token punctuation">{</span>max2 <span class="token operator">=</span> num<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token keyword">if</span> max1 <span class="token operator">&gt;=</span> max2 <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">{</span><span class="token keyword">return</span> k<span class="token punctuation">}</span><span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> leetcode </tag>
+            
+            <tag> golng </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>334.递增的三元子序列</title>
       <link href="/2022/01/12/334-%E9%80%92%E5%A2%9E%E7%9A%84%E4%B8%89%E5%85%83%E5%AD%90%E5%BA%8F%E5%88%97/"/>
       <url>/2022/01/12/334-%E9%80%92%E5%A2%9E%E7%9A%84%E4%B8%89%E5%85%83%E5%AD%90%E5%BA%8F%E5%88%97/</url>
@@ -17,6 +38,35 @@
             <tag> leetcode </tag>
             
             <tag> golng </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>278.第一个错误的版本</title>
+      <link href="/2022/01/11/278-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E7%89%88%E6%9C%AC/"/>
+      <url>/2022/01/11/278-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E7%89%88%E6%9C%AC/</url>
+      
+        <content type="html"><![CDATA[<h3 id="278-第一个错误的版本"><a href="#278-第一个错误的版本" class="headerlink" title="278.第一个错误的版本"></a>278.第一个错误的版本</h3><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p><p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p><p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p><p><a href="https://leetcode-cn.com/problems/first-bad-version/">https://leetcode-cn.com/problems/first-bad-version/</a></p><h3 id="思路及算法"><a href="#思路及算法" class="headerlink" title="思路及算法"></a>思路及算法</h3><p>二分查找</p><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">firstBadVersion</span><span class="token punctuation">(</span>n <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>    r<span class="token punctuation">,</span> l <span class="token operator">:=</span> <span class="token number">1</span><span class="token punctuation">,</span> n    mid <span class="token operator">:=</span> <span class="token punctuation">(</span>r <span class="token operator">+</span> l<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>    <span class="token keyword">for</span> r <span class="token operator">&lt;</span> l <span class="token punctuation">{</span>        <span class="token keyword">if</span> <span class="token function">isBadVersion</span><span class="token punctuation">(</span>mid<span class="token punctuation">)</span> <span class="token punctuation">{</span>            l <span class="token operator">=</span> mid        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>            r <span class="token operator">=</span> mid <span class="token operator">+</span> <span class="token number">1</span>        <span class="token punctuation">}</span>        mid <span class="token operator">=</span> <span class="token punctuation">(</span>r <span class="token operator">+</span> l<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>    <span class="token punctuation">}</span>    <span class="token keyword">if</span> <span class="token function">isBadVersion</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">return</span> r    <span class="token punctuation">}</span>    <span class="token keyword">return</span> l<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 二分查找 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> leetcode </tag>
+            
+            <tag> golang </tag>
+            
+            <tag> 二分查找 </tag>
             
         </tags>
       

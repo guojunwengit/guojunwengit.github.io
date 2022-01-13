@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="794.有效的井字游戏, Junwen&#39;Blog">
-    <meta name="description" content="794.有效的井字游戏">
+    <meta name="keywords" content="278.第一个错误的版本, Junwen&#39;Blog">
+    <meta name="description" content="278.第一个错误的版本">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>794.有效的井字游戏 | Junwen&#39;Blog</title>
+    <title>278.第一个错误的版本 | Junwen&#39;Blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -326,7 +326,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">794.有效的井字游戏</h1>
+                    <h1 class="description center-align post-title">278.第一个错误的版本</h1>
                 </div>
             </div>
         </div>
@@ -446,8 +446,12 @@
                                 <span class="chip bg-color">leetcode</span>
                             </a>
                         
-                            <a href="/tags/golng/">
-                                <span class="chip bg-color">golng</span>
+                            <a href="/tags/golang/">
+                                <span class="chip bg-color">golang</span>
+                            </a>
+                        
+                            <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
+                                <span class="chip bg-color">二分查找</span>
                             </a>
                         
                     </div>
@@ -458,8 +462,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/hash/" class="post-category">
-                                hash
+                            <a href="/categories/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="post-category">
+                                二分查找
                             </a>
                         
                     </div>
@@ -471,21 +475,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-10
+                    2022-01-11
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-12-18
+                    2022-01-13
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    212
+                    238
                 </div>
                 
 
@@ -515,67 +519,27 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">validTicTacToe</span><span class="token punctuation">(</span>board <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
-	<span class="token keyword">var</span> player1<span class="token punctuation">,</span> player2 <span class="token builtin">int</span>
-	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> s <span class="token operator">:=</span> <span class="token keyword">range</span> board <span class="token punctuation">{</span>
-		player1<span class="token operator">+=</span>strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"X"</span><span class="token punctuation">)</span>
-        player2<span class="token operator">+=</span>strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"O"</span><span class="token punctuation">)</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">if</span> player1 <span class="token operator">&lt;</span> player2 <span class="token operator">||</span> player1 <span class="token operator">-</span> player2 <span class="token operator">&gt;</span> <span class="token number">1</span> <span class="token punctuation">{</span>
-		<span class="token keyword">return</span> <span class="token boolean">false</span>
-	<span class="token punctuation">}</span>
-
-	sum1 <span class="token operator">:=</span> <span class="token number">0</span>
-	sum2 <span class="token operator">:=</span> <span class="token number">0</span>
-	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span><span class="token number">3</span> <span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span>  board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">' '</span><span class="token punctuation">{</span>
-			<span class="token keyword">if</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'X'</span> <span class="token punctuation">{</span>
-				sum1<span class="token operator">++</span>
-			<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> board<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'O'</span> <span class="token punctuation">{</span>
-				sum2<span class="token operator">++</span>
-			<span class="token punctuation">}</span>
-		<span class="token punctuation">}</span>
-		<span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span>  board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> board<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">' '</span><span class="token punctuation">{</span>
-			<span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'X'</span> <span class="token punctuation">{</span>
-				sum1<span class="token operator">++</span>
-			<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'O'</span> <span class="token punctuation">{</span>
-				sum2<span class="token operator">++</span>
-			<span class="token punctuation">}</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">' '</span> <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'X'</span> <span class="token punctuation">{</span>
-			sum1<span class="token operator">++</span>
-		<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'O'</span> <span class="token punctuation">{</span>
-			sum2<span class="token operator">++</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> board<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">' '</span> <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'X'</span> <span class="token punctuation">{</span>
-			sum1<span class="token operator">++</span>
-		<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> board<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'O'</span> <span class="token punctuation">{</span>
-			sum2<span class="token operator">++</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-
-	<span class="token keyword">if</span> sum1 <span class="token operator">==</span> sum2 <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> sum1 <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
-			<span class="token keyword">return</span> <span class="token boolean">true</span>
-		<span class="token punctuation">}</span>
-		<span class="token keyword">return</span> <span class="token boolean">false</span>
-	<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> sum1 <span class="token operator">==</span> <span class="token number">1</span> <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> player1 <span class="token operator">&gt;</span> player2 <span class="token punctuation">{</span>
-			<span class="token keyword">return</span> <span class="token boolean">true</span>
-		<span class="token punctuation">}</span>
-		<span class="token keyword">return</span> <span class="token boolean">false</span>
-	<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> sum2 <span class="token operator">==</span> <span class="token number">1</span> <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> player1 <span class="token operator">==</span> player2 <span class="token punctuation">{</span>
-			<span class="token keyword">return</span> <span class="token boolean">true</span>
-		<span class="token punctuation">}</span>
-		<span class="token keyword">return</span> <span class="token boolean">false</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">return</span> <span class="token boolean">true</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <h3 id="278-第一个错误的版本"><a href="#278-第一个错误的版本" class="headerlink" title="278.第一个错误的版本"></a>278.第一个错误的版本</h3><p>你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。</p>
+<p>假设你有 n 个版本 [1, 2, …, n]，你想找出导致之后所有版本出错的第一个错误的版本。</p>
+<p>你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/first-bad-version/">https://leetcode-cn.com/problems/first-bad-version/</a></p>
+<h3 id="思路及算法"><a href="#思路及算法" class="headerlink" title="思路及算法"></a>思路及算法</h3><p>二分查找</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">firstBadVersion</span><span class="token punctuation">(</span>n <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+    r<span class="token punctuation">,</span> l <span class="token operator">:=</span> <span class="token number">1</span><span class="token punctuation">,</span> n
+    mid <span class="token operator">:=</span> <span class="token punctuation">(</span>r <span class="token operator">+</span> l<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
+    <span class="token keyword">for</span> r <span class="token operator">&lt;</span> l <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token function">isBadVersion</span><span class="token punctuation">(</span>mid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            l <span class="token operator">=</span> mid
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            r <span class="token operator">=</span> mid <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token punctuation">}</span>
+        mid <span class="token operator">=</span> <span class="token punctuation">(</span>r <span class="token operator">+</span> l<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token function">isBadVersion</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> r
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> l
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -603,7 +567,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://guojunwengit.github.io/2021/12/10/794-%E6%9C%89%E6%95%88%E7%9A%84%E4%BA%95%E5%AD%97%E6%B8%B8%E6%88%8F/">https://guojunwengit.github.io/2021/12/10/794-%E6%9C%89%E6%95%88%E7%9A%84%E4%BA%95%E5%AD%97%E6%B8%B8%E6%88%8F/</a>
+                    <a href="https://guojunwengit.github.io/2022/01/11/278-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E7%89%88%E6%9C%AC/">https://guojunwengit.github.io/2022/01/11/278-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E7%89%88%E6%9C%AC/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -645,8 +609,12 @@
                                     <span class="chip bg-color">leetcode</span>
                                 </a>
                             
-                                <a href="/tags/golng/">
-                                    <span class="chip bg-color">golng</span>
+                                <a href="/tags/golang/">
+                                    <span class="chip bg-color">golang</span>
+                                </a>
+                            
+                                <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
+                                    <span class="chip bg-color">二分查找</span>
                                 </a>
                             
                         </div>
@@ -822,32 +790,28 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/01/11/278-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E7%9A%84%E7%89%88%E6%9C%AC/">
+                <a href="/2022/01/12/334-%E9%80%92%E5%A2%9E%E7%9A%84%E4%B8%89%E5%85%83%E5%AD%90%E5%BA%8F%E5%88%97/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="278.第一个错误的版本">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="334.递增的三元子序列">
                         
-                        <span class="card-title">278.第一个错误的版本</span>
+                        <span class="card-title">334.递增的三元子序列</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            278.第一个错误的版本
+                            334.递增的三元子序列
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-11
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-12
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="post-category">
-                                    二分查找
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Junwen
                             
                         </span>
                     </div>
@@ -859,12 +823,8 @@
                         <span class="chip bg-color">leetcode</span>
                     </a>
                     
-                    <a href="/tags/golang/">
-                        <span class="chip bg-color">golang</span>
-                    </a>
-                    
-                    <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
-                        <span class="chip bg-color">二分查找</span>
+                    <a href="/tags/golng/">
+                        <span class="chip bg-color">golng</span>
                     </a>
                     
                 </div>
@@ -878,23 +838,23 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/12/05/hash/">
+                <a href="/2021/12/10/794-%E6%9C%89%E6%95%88%E7%9A%84%E4%BA%95%E5%AD%97%E6%B8%B8%E6%88%8F/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/一致性hash算法.jpg" class="responsive-img" alt="一致性hash算法">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="794.有效的井字游戏">
                         
-                        <span class="card-title">一致性hash算法</span>
+                        <span class="card-title">794.有效的井字游戏</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            一致性hash算法
+                            794.有效的井字游戏
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-10
                             </span>
                         <span class="publish-author">
                             
@@ -911,8 +871,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/hash/">
-                        <span class="chip bg-color">hash</span>
+                    <a href="/tags/leetcode/">
+                        <span class="chip bg-color">leetcode</span>
+                    </a>
+                    
+                    <a href="/tags/golng/">
+                        <span class="chip bg-color">golng</span>
                     </a>
                     
                 </div>
