@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="一致性hash算法, Junwen&#39;Blog">
-    <meta name="description" content="一致性hash算法">
+    <meta name="keywords" content="剑指 Offer II 034. 外星语言是否排序, Junwen&#39;Blog">
+    <meta name="description" content="剑指 Offer II 034. 外星语言是否排序">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>一致性hash算法 | Junwen&#39;Blog</title>
+    <title>剑指 Offer II 034. 外星语言是否排序 | Junwen&#39;Blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/一致性hash算法.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">一致性hash算法</h1>
+                    <h1 class="description center-align post-title">剑指 Offer II 034. 外星语言是否排序</h1>
                 </div>
             </div>
         </div>
@@ -442,8 +442,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/hash/">
-                                <span class="chip bg-color">hash</span>
+                            <a href="/tags/leetcode/">
+                                <span class="chip bg-color">leetcode</span>
+                            </a>
+                        
+                            <a href="/tags/golang/">
+                                <span class="chip bg-color">golang</span>
                             </a>
                         
                     </div>
@@ -454,8 +458,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/hash/" class="post-category">
-                                hash
+                            <a href="/categories/leetcode/" class="post-category">
+                                leetcode
                             </a>
                         
                     </div>
@@ -467,28 +471,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-05
+                    2022-01-13
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-12-18
+                    2022-01-15
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2k
+                    143
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    1 分
                 </div>
                 
 
@@ -511,35 +515,41 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="一致性hash算法"><a href="#一致性hash算法" class="headerlink" title="一致性hash算法"></a>一致性hash算法</h1><h3 id="分布式缓存应用场景"><a href="#分布式缓存应用场景" class="headerlink" title="分布式缓存应用场景"></a>分布式缓存应用场景</h3><p>假设我们有3台缓存服务器，服务器编号分别为S0、S1、S2，同时我们有3万张图片需要缓存，最好这些图片能均匀的缓存到服务器上，这样能够分担缓存的压力。那么应该如何实现这个功能。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205201655.png"></p>
-<p>简单的做法是对缓存上的key进行hash计算，hash后的值是一个整数，再用缓存服务器的数量对这个数进行取模计算，用取模产生的余数来决定数据应该缓存到哪一台服务器上。</p>
-<h3 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h3><p>假设我们使用图片名称作为访问缓存的key，那么我们可以把计算过程写成公式。首先对图片名称进行hash计算再用机器数取模得到余数。这里我们有3台服务器，使用hash值得到的数字再用3取模，取模之后对应3个数字0、1、2正好与服务器编号对应，假设某张图片对应的hash值为6,对3取模，取模的结果为0，我们就把图片缓存到S0服务器上。因为对同一张图片的名称进行hash运算得到的值是不变的，所以需要访问图片的时候，只要再次对图片进行hash值计算和取模计算，我们就能知道图片存放在那台服务器上，只要到这台服务器上查找图片就行。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205203024.png" alt="img"></p>
-<p>通过这种方法我们就可以将3万张图片分布到3台缓存服务器上，下次访问某张图片时，能够直接计算出图片缓存在哪台服务器上，这样就可以满足我们的需求，这种算法也被称为hash算法 。</p>
-<p>但是hash算法有一个缺陷，假如现在要往缓存服务器集群增加一台服务器，缓存服务器的数量由3台增加到了4台，这个时候要计算图片存在哪台缓存服务器时，先对图片名称进行hash值计算得到被取余数，但是取余数由3变成了4，在被取余数不变的情况下，余数不同，那么访问这张图片的服务器的编号就会改变，之前6%3=0,现在6%4=2，程序会在S2服务器上找图片，但是我们知道图片是存放在S0上面的所以是读取不到图片的。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205204002.png" alt="img"></p>
-<p>由于缓存服务器数量发生变化导致不能正常访问缓存数据，而程序在无法访问缓存数据时，就会向后端服务器请求数据，由于大量缓存在同一时间失效，造成缓存雪崩，缓存服务器无法起到承担缓存压力的作用，压力就转到后端服务器，整个系统很有可能被压垮，为了避免这种问题，就需要使用一致性hash算法。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205204350.png" alt="img"></p>
-<h3 id="一致性hash算法-1"><a href="#一致性hash算法-1" class="headerlink" title="一致性hash算法"></a>一致性hash算法</h3><p>我们先来看一下一致性hash算法的原理， 先想象一个2^32的圆，这个圆由2^32个点组成，这个圆环被称为hash环。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205204745.png" alt="img"></p>
-<p>假设我们还是有3台缓存服务器，服务器编号分别是A，B，C。我们用他们各自的hash编号进行hash计算，然后将hash后的结果用2^32取模，算出来的结果一定是在0-2^32-1之间的整数，我们就用对服务器A算出来的整数来代表服务器A，hash环上必定有一个点与这个整数对应，这样就可以把服务器A映射到这个环上，用同样的方法可以将服务器A，B映射到这个环上，这样就可以把缓存服务器都映射到这个环上。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205205358.png" alt="img"></p>
-<p>对于需要缓存的记录我们以同样的方法将被缓存的对象映射到hash环上。假设我们需要缓存图片a.jpg，我们使用图片的名称作为找到图片的key，那么我们就可以以相同的公式将图片映射到上面的hash环上，现在缓存服务器与图片都被映射到hash环上了。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205205800.png" alt="img"></p>
-<p>现在要确定图片到底缓存在哪个服务器上，其实很简单，只需要从图片的位置开始，沿顺时针方向查找，遇到的第一个服务器就是数据缓存的服务器，假设要3张图片a,b,c需要缓存。a图片会被缓存到服务器B上，b图片会被缓存到服务器C上,c图片会被缓存到服务器A上。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205210216.png" alt="img"></p>
-<p>由于被缓存对象与服务器hash后的值是固定的，所以在服务器不变的情况下，在想要访问这张图片时，只要进行相同的hash计算，就可以计算出这张图片被缓存在哪台服务器下，直接去对应服务器上查找图片即可。</p>
-<p>现在来看看一致性hash算法能不能解决hash算法的问题，hash算法执行简单的对服务器数量进行取模时，如果服务器数量发生变化，就会导致大量缓存失效，产生缓存雪崩。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205210919.png" alt="img"></p>
-<p>我们使用一致性hash算法来模拟一遍，假设增加了一台服务器D，按照一致性hash算法的规则，先将服务器D映射到hash环上，这样一部分图片沿顺时针遇到的第一台缓存服务器就由服务器A变成了服务器D。也就是说如果增加了一台服务器，会导致一小部分图片无法访问，但是大部分图片仍可以正常访问，这就是一致性hash算法的优点。</p>
-<p>一致性hash算法的优点，缓存服务器的数量发生了改变，并不是所有的缓存失效，而是只有部分缓存失效，缓存仍然能够分担整个系统大部分的压力，而不是所有压力在同一时间集中到后端服务器上。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205211536.png" alt="img"></p>
-<h3 id="hash偏斜"><a href="#hash偏斜" class="headerlink" title="hash偏斜"></a>hash偏斜</h3><p>在介绍一致性hash的原理时，我们理想化的认为3台服务器均匀的映射到了hash环上，但是在实际的映射中，服务器映射到hash环上很有可能是斜的，这种情况称为hash环的偏斜，hash环偏斜的情况下，大部分的缓存对象很有可能缓存到一台服务器上，导致缓存分布极度不均匀，3台服务器没有被平均使用。如果缓存数据较多的服务器出现故障，由于失效的缓存太多，在极端的情况下，很有可能引起系统故障。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205212235.png" alt="img"></p>
-<p>要想均匀的将缓存分布到服务器上，最好是能让服务器尽量多，这样才能出现在hash环上。具体的实行方式是增加一层虚拟节点，这里真是的服务器资源只有3台，但是根据现有的物理节点，映射出很多虚拟节点。对于服务器A，我们可以映射出A1，A2……An。再将这些虚拟结点加入hash环，引入虚拟节点之后，虚拟节点越多，hash环上的服务器结点就越多，缓存被均匀分布的概率就越大，这样就可以一定程度上减少hash环偏斜带来的影响。</p>
-<p>具体在缓存读写时，可以先找到缓存对应的虚拟节点，然后虚拟节点再找到自己的真实节点，再进行缓存数据的读写。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/20211205212655.png" alt="img"></p>
+                <h3 id="剑指-Offer-II-034-外星语言是否排序"><a href="#剑指-Offer-II-034-外星语言是否排序" class="headerlink" title="剑指 Offer II 034. 外星语言是否排序"></a>剑指 Offer II 034. 外星语言是否排序</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lwyVBB/">https://leetcode-cn.com/problems/lwyVBB/</a></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">isAlienSorted</span><span class="token punctuation">(</span>words <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">,</span> order <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+	n <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">)</span>
+	m <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">uint8</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">1</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token boolean">true</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">len</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		m<span class="token punctuation">[</span>order<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> i
+	<span class="token punctuation">}</span>
+	n <span class="token operator">-=</span> <span class="token number">1</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		str1<span class="token punctuation">,</span> str2 <span class="token operator">:=</span> words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span>
+		<span class="token keyword">for</span> j <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token function">Min</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> j<span class="token operator">++</span> <span class="token punctuation">{</span>
+			<span class="token keyword">if</span> m<span class="token punctuation">[</span>str1<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> m<span class="token punctuation">[</span>str2<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+				<span class="token keyword">break</span>
+			<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> m<span class="token punctuation">[</span>str1<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span> m<span class="token punctuation">[</span>str2<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+				<span class="token keyword">return</span> <span class="token boolean">false</span>
+			<span class="token punctuation">}</span>
+            <span class="token keyword">if</span> j <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">==</span> <span class="token function">Min</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token keyword">return</span> <span class="token boolean">false</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">Min</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> x <span class="token operator">&gt;</span> y <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> y
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> x
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
                 
             </div>
@@ -566,7 +576,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://guojunwengit.github.io/2021/12/05/hash/">https://guojunwengit.github.io/2021/12/05/hash/</a>
+                    <a href="https://guojunwengit.github.io/2022/01/13/%E5%89%91%E6%8C%87OfferII034-%E5%A4%96%E6%98%9F%E8%AF%AD%E8%A8%80%E6%98%AF%E5%90%A6%E6%8E%92%E5%BA%8F/">https://guojunwengit.github.io/2022/01/13/%E5%89%91%E6%8C%87OfferII034-%E5%A4%96%E6%98%9F%E8%AF%AD%E8%A8%80%E6%98%AF%E5%90%A6%E6%8E%92%E5%BA%8F/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -604,8 +614,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/hash/">
-                                    <span class="chip bg-color">hash</span>
+                                <a href="/tags/leetcode/">
+                                    <span class="chip bg-color">leetcode</span>
+                                </a>
+                            
+                                <a href="/tags/golang/">
+                                    <span class="chip bg-color">golang</span>
                                 </a>
                             
                         </div>
@@ -781,24 +795,76 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/12/10/794-%E6%9C%89%E6%95%88%E7%9A%84%E4%BA%95%E5%AD%97%E6%B8%B8%E6%88%8F/">
+                <a href="/2022/01/15/1716-%E8%AE%A1%E7%AE%97%E5%8A%9B%E6%89%A3%E9%93%B6%E8%A1%8C%E7%9A%84%E9%92%B1/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="794.有效的井字游戏">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="1716.计算力扣银行的钱">
                         
-                        <span class="card-title">794.有效的井字游戏</span>
+                        <span class="card-title">1716.计算力扣银行的钱</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            794.有效的井字游戏
+                            1716.计算力扣银行的钱
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-10
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-15
                         </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/leetcode/" class="post-category">
+                                    leetcode
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/leetcode/">
+                        <span class="chip bg-color">leetcode</span>
+                    </a>
+                    
+                    <a href="/tags/golang/">
+                        <span class="chip bg-color">golang</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/01/13/747-%E8%87%B3%E5%B0%91%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E4%B8%A4%E5%80%8D%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="747.至少是其他数字两倍的最大数">
+                        
+                        <span class="card-title">747.至少是其他数字两倍的最大数</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            747.至少是其他数字两倍的最大数
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-13
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -820,55 +886,6 @@
                     
                     <a href="/tags/golng/">
                         <span class="chip bg-color">golng</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/12/05/hash/">
-                    <div class="card-image">
-                        
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/hash/一致性hash算法.jpg" class="responsive-img" alt="一致性hash算法">
-                        
-                        <span class="card-title">一致性hash算法</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            一致性hash算法
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-05
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/hash/" class="post-category">
-                                    hash
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/hash/">
-                        <span class="chip bg-color">hash</span>
                     </a>
                     
                 </div>
