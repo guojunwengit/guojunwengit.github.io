@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title>Centos7安装mysql8.0</title>
+      <link href="/2022/02/23/Centos7%E5%AE%89%E8%A3%85mysql/"/>
+      <url>/2022/02/23/Centos7%E5%AE%89%E8%A3%85mysql/</url>
+      
+        <content type="html"><![CDATA[<h3 id="Centos7安装mysql8-0"><a href="#Centos7安装mysql8-0" class="headerlink" title="Centos7安装mysql8.0"></a>Centos7安装mysql8.0</h3><h3 id="下载MySQL-安装包："><a href="#下载MySQL-安装包：" class="headerlink" title="下载MySQL 安装包："></a>下载MySQL 安装包：</h3><pre class="line-numbers language-none"><code class="language-none">wget https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安装mysql 安装源：</p><pre class="line-numbers language-none"><code class="language-none">yum -y localinstall mysql80-community-release-el7-5.noarch.rpm<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="在线安装MySQL"><a href="#在线安装MySQL" class="headerlink" title="在线安装MySQL"></a>在线安装MySQL</h3><pre class="line-numbers language-none"><code class="language-none">yum -y install mysql-community-server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223203237323.png" alt="image-20220223203237323"></p><h3 id="启动mysql-服务"><a href="#启动mysql-服务" class="headerlink" title="启动mysql 服务"></a>启动mysql 服务</h3><pre class="line-numbers language-none"><code class="language-none">systemctl start mysqld<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="设置开机启动"><a href="#设置开机启动" class="headerlink" title="设置开机启动"></a>设置开机启动</h3><pre class="line-numbers language-none"><code class="language-none">systemctl enable mysqldsystemctl daemon-reload<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><h2 id="修改root登录密码"><a href="#修改root登录密码" class="headerlink" title="修改root登录密码"></a>修改root登录密码</h2><p>mysql安装完成之后，会在/var/log/mysqld.log文件中给root生成了一个临时的默认密码。</p><pre class="line-numbers language-none"><code class="language-none">vim /var/log/mysqld.log<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223203638341.png" alt="image-20220223203638341"></p><p>记住初始密码：</p><pre class="line-numbers language-none"><code class="language-none">mysql -u root -p<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>登录后，需要第一时间修改密码，但是如果是测试库的话，密码没必要设置的很复杂，就需要修改一下</p><p>永久修改validate_password 参数</p><pre class="line-numbers language-none"><code class="language-none"># vi /etc/my.cnfvalidate_password.policy=0validate_password.length=4validate_password.number_count=0validate_password.mixed_case_count=0validate_password.special_char_count=0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223205301081.png" alt="image-20220223205301081"></p><h3 id="设置远程登录"><a href="#设置远程登录" class="headerlink" title="设置远程登录"></a>设置远程登录</h3><pre class="line-numbers language-none"><code class="language-none">create user 'root'@'%' identified by '密码';grant all on *.* to 'root'@'%';alter user 'root'@'%' identified with mysql_native_password by '密码';flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223210225424.png" alt="image-20220223210225424"></p><p>远程连接mysql</p><pre class="line-numbers language-none"><code class="language-none">mysql -h 192.168.124.3 -P 3306 -u root -pmysqlmysql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Mysql </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Mysql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Prometheus Node Exporter TLS认证</title>
+      <link href="/2022/02/22/PrometheusNodeExporterTLS%E8%AE%A4%E8%AF%81/"/>
+      <url>/2022/02/22/PrometheusNodeExporterTLS%E8%AE%A4%E8%AF%81/</url>
+      
+        <content type="html"><![CDATA[<h3 id="Prometheus-Node-Exporter-TLS认证"><a href="#Prometheus-Node-Exporter-TLS认证" class="headerlink" title="Prometheus Node Exporter TLS认证"></a>Prometheus Node Exporter TLS认证</h3><p>Node Exporter 启动失败，日志信息如下，配置TLS认证可以解决。</p><pre class="line-numbers language-none"><code class="language-none">level=info ts=2022-02-22T12:39:11.916Z caller=tls_config.go:191 msg="TLS is disabled." http2=false<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>Node Exporter v1.0.0之前的版本不支持TLS和认证，所以默认情况下是通过http暴露的/metrics，默认没有任何访问限制。对于有些环境硬性要求不允许使用http提供访问，和对安全性要求较高必须有认证的情况下，原来只能通过额外增加一层反向代理（如nginx）来解决。但给每个node_export配1个nginx，这显然这太复杂太重了。<br>从 v1.0.0版本开始实验性的支持https和基本认证。 从 Node Exporter 开始到后续其他的组件，都将支持 TLS 和 basic auth， 同时也列出了最新的安全基准（默认情况下都支持 TLS v1.2 及以上）。下面让我们来看看具体配置。</p><h3 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h3><pre class="line-numbers language-none"><code class="language-none">openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=test.cn/CN=localhost"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>命令执行完生成两个文件 node_exporter.crt  node_exporter.key。</p><h3 id="配置Node-Exporter-开启-TLS"><a href="#配置Node-Exporter-开启-TLS" class="headerlink" title="配置Node Exporter 开启 TLS"></a>配置Node Exporter 开启 TLS</h3><p>将<code>node_exporter</code> 和<code>node_exporter.crt node_exporter.key</code> 放在同一个目录。</p><p>编写配置文件，并保存为 config.yaml(文件名自定义)</p><pre class="line-numbers language-none"><code class="language-none">tls_server_config:  cert_file: node_exporter.crt  key_file: node_exporter.key<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>使用配置文件启动启动node_exporter</p><pre class="line-numbers language-none"><code class="language-none">./node_exporter --web.config=config.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>当你看到如下日志，说明TLS已生效。</p><pre class="line-numbers language-none"><code class="language-none">level=info ts=2022-02-22T12:48:49.747Z caller=node_exporter.go:199 msg="Listening on" address=:9100level=info ts=2022-02-22T12:48:49.748Z caller=tls_config.go:224 msg="TLS is enabled." http2=true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>验证：</p><pre class="line-numbers language-none"><code class="language-none"> # curl localhost:9100/metricsClient sent an HTTP request to an HTTPS server. # curl https://localhost:9100/metrics  curl: (60) SSL certificate problem: self signed certificateMore details here: https://curl.haxx.se/docs/sslcerts.htmlcurl failed to verify the legitimacy of the server and therefore could notestablish a secure connection to it. To learn more about this situation andhow to fix it, please visit the web page mentioned above.#### 使用-k跳过证书验证就可以获得metrics了curl  -k https://localhost:9100/metrics<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h3 id="Prometheus-配置"><a href="#Prometheus-配置" class="headerlink" title="Prometheus 配置"></a>Prometheus 配置</h3><p>在prometheus.yml文件下增加如下配置后，在Prometheus UI中应该就能看到target了。</p><pre class="line-numbers language-none"><code class="language-none">- job_name: 'node_exporter'  scheme: https  tls_config:    ca_file: node_exporter.crt  static_configs:  - targets: ['localhost:9100']<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Prometheus/image-20220222214913716.png" alt="image-20220222214913716"></p><p>生成密码，如果没有htpasswd命令，Centos7 安装命令 yum install -y httpd-tools。</p><pre class="line-numbers language-none"><code class="language-none">这里我只用它来生成了密码 hash ， 没有传递用户名。# htpasswd -nBC 12 '' | tr -d ':\n'      <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>修改node_exporter的配置文件config.yaml。</p><pre class="line-numbers language-none"><code class="language-none">tls_server_config:  cert_file: node_exporter.crt  key_file: node_exporter.keybasic_auth_users:  # 当前设置的用户名为 prometheus ， 可以设置多个  prometheus: $2y$12$CTF/pW97pUAsm2iyMn4cJeWQV9cYxWWd1Nxs23.VFmHnuub31qfRu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>使用配置文件启动启动node_exporter。</p><pre class="line-numbers language-none"><code class="language-none">./node_exporter --web.config=config.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>验证，将提示401。</p><pre class="line-numbers language-none"><code class="language-none">#curl  -Ik https://localhost:9100/metricsHTTP/1.1 401 UnauthorizedContent-Type: text/plain; charset=utf-8Www-Authenticate: BasicX-Content-Type-Options: nosniffDate: Tue, 22 Feb 2022 13:56:28 GMTContent-Length: 13<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="修改Prometheus-配置"><a href="#修改Prometheus-配置" class="headerlink" title="修改Prometheus 配置"></a>修改Prometheus 配置</h4><pre class="line-numbers language-none"><code class="language-none">- job_name: 'node_exporter'  scheme: https  tls_config:    ca_file: node_exporter.crt  basic_auth:    username: prometheus    password: prometheuspassword    static_configs:  - targets: ['localhost:9100']<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>修改配置文件后，只要让 Prometheus 重新加载配置文件即可：</p><pre class="line-numbers language-none"><code class="language-none">killall -HUP prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Prometheus Node </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Prometheus Node </tag>
+            
+            <tag> Node Exporter </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>认证</title>
+      <link href="/2022/02/22/%E8%AE%A4%E8%AF%81/"/>
+      <url>/2022/02/22/%E8%AE%A4%E8%AF%81/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>25.K个一组翻转链表</title>
       <link href="/2022/01/19/25-K%E4%B8%AA%E4%B8%80%E7%BB%84%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8/"/>
       <url>/2022/01/19/25-K%E4%B8%AA%E4%B8%80%E7%BB%84%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>

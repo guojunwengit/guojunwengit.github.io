@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="剑指 Offer II 034. 外星语言是否排序, Junwen&#39;Blog">
-    <meta name="description" content="剑指 Offer II 034. 外星语言是否排序">
+    <meta name="keywords" content="Prometheus Node Exporter TLS认证, Junwen&#39;Blog">
+    <meta name="description" content="Prometheus Node Exporter TLS认证">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>剑指 Offer II 034. 外星语言是否排序 | Junwen&#39;Blog</title>
+    <title>Prometheus Node Exporter TLS认证 | Junwen&#39;Blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -321,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/guojunwengit/images/Prometheus/Prometheus.jpeg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">剑指 Offer II 034. 外星语言是否排序</h1>
+                    <h1 class="description center-align post-title">Prometheus Node Exporter TLS认证</h1>
                 </div>
             </div>
         </div>
@@ -442,12 +442,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/leetcode/">
-                                <span class="chip bg-color">leetcode</span>
+                            <a href="/tags/Prometheus-Node/">
+                                <span class="chip bg-color">Prometheus Node</span>
                             </a>
                         
-                            <a href="/tags/golang/">
-                                <span class="chip bg-color">golang</span>
+                            <a href="/tags/Node-Exporter/">
+                                <span class="chip bg-color">Node Exporter</span>
                             </a>
                         
                     </div>
@@ -458,8 +458,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/leetcode/" class="post-category">
-                                leetcode
+                            <a href="/categories/Prometheus-Node/" class="post-category">
+                                Prometheus Node
                             </a>
                         
                     </div>
@@ -471,28 +471,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-13
+                    2022-02-22
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-01-15
+                    2022-02-23
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    143
+                    731
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -515,40 +515,86 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="剑指-Offer-II-034-外星语言是否排序"><a href="#剑指-Offer-II-034-外星语言是否排序" class="headerlink" title="剑指 Offer II 034. 外星语言是否排序"></a>剑指 Offer II 034. 外星语言是否排序</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lwyVBB/">https://leetcode-cn.com/problems/lwyVBB/</a></p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-go" data-language="go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">isAlienSorted</span><span class="token punctuation">(</span>words <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">,</span> order <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
-	n <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">)</span>
-	m <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">uint8</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span>
-	<span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">1</span> <span class="token punctuation">{</span>
-		<span class="token keyword">return</span> <span class="token boolean">true</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">len</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
-		m<span class="token punctuation">[</span>order<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> i
-	<span class="token punctuation">}</span>
-	n <span class="token operator">-=</span> <span class="token number">1</span>
-	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
-		str1<span class="token punctuation">,</span> str2 <span class="token operator">:=</span> words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span>
-		<span class="token keyword">for</span> j <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token function">Min</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> j<span class="token operator">++</span> <span class="token punctuation">{</span>
-			<span class="token keyword">if</span> m<span class="token punctuation">[</span>str1<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> m<span class="token punctuation">[</span>str2<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
-				<span class="token keyword">break</span>
-			<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> m<span class="token punctuation">[</span>str1<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span> m<span class="token punctuation">[</span>str2<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
-				<span class="token keyword">return</span> <span class="token boolean">false</span>
-			<span class="token punctuation">}</span>
-            <span class="token keyword">if</span> j <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">==</span> <span class="token function">Min</span><span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token function">len</span><span class="token punctuation">(</span>words<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-				<span class="token keyword">return</span> <span class="token boolean">false</span>
-			<span class="token punctuation">}</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">return</span> <span class="token boolean">true</span>
-<span class="token punctuation">}</span>
+                <h3 id="Prometheus-Node-Exporter-TLS认证"><a href="#Prometheus-Node-Exporter-TLS认证" class="headerlink" title="Prometheus Node Exporter TLS认证"></a>Prometheus Node Exporter TLS认证</h3><p>Node Exporter 启动失败，日志信息如下，配置TLS认证可以解决。</p>
+<pre class="line-numbers language-none"><code class="language-none">level=info ts=2022-02-22T12:39:11.916Z caller=tls_config.go:191 msg="TLS is disabled." http2=false<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<span class="token keyword">func</span> <span class="token function">Min</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
-	<span class="token keyword">if</span> x <span class="token operator">&gt;</span> y <span class="token punctuation">{</span>
-		<span class="token keyword">return</span> y
-	<span class="token punctuation">}</span>
-	<span class="token keyword">return</span> x
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>Node Exporter v1.0.0之前的版本不支持TLS和认证，所以默认情况下是通过http暴露的/metrics，默认没有任何访问限制。对于有些环境硬性要求不允许使用http提供访问，和对安全性要求较高必须有认证的情况下，原来只能通过额外增加一层反向代理（如nginx）来解决。但给每个node_export配1个nginx，这显然这太复杂太重了。<br>从 v1.0.0版本开始实验性的支持https和基本认证。 从 Node Exporter 开始到后续其他的组件，都将支持 TLS 和 basic auth， 同时也列出了最新的安全基准（默认情况下都支持 TLS v1.2 及以上）。下面让我们来看看具体配置。</p>
+<h3 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h3><pre class="line-numbers language-none"><code class="language-none">openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=CN/ST=Beijing/L=Beijing/O=test.cn/CN=localhost"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>命令执行完生成两个文件 node_exporter.crt  node_exporter.key。</p>
+<h3 id="配置Node-Exporter-开启-TLS"><a href="#配置Node-Exporter-开启-TLS" class="headerlink" title="配置Node Exporter 开启 TLS"></a>配置Node Exporter 开启 TLS</h3><p>将<code>node_exporter</code> 和<code>node_exporter.crt node_exporter.key</code> 放在同一个目录。</p>
+<p>编写配置文件，并保存为 config.yaml(文件名自定义)</p>
+<pre class="line-numbers language-none"><code class="language-none">tls_server_config:
+  cert_file: node_exporter.crt
+  key_file: node_exporter.key<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>使用配置文件启动启动node_exporter</p>
+<pre class="line-numbers language-none"><code class="language-none">./node_exporter --web.config=config.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>当你看到如下日志，说明TLS已生效。</p>
+<pre class="line-numbers language-none"><code class="language-none">level=info ts=2022-02-22T12:48:49.747Z caller=node_exporter.go:199 msg="Listening on" address=:9100
+level=info ts=2022-02-22T12:48:49.748Z caller=tls_config.go:224 msg="TLS is enabled." http2=true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>验证：</p>
+<pre class="line-numbers language-none"><code class="language-none"> # curl localhost:9100/metrics
+Client sent an HTTP request to an HTTPS server.
+
+ # curl https://localhost:9100/metrics  
+curl: (60) SSL certificate problem: self signed certificate
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+
+#### 使用-k跳过证书验证就可以获得metrics了
+curl  -k https://localhost:9100/metrics<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Prometheus-配置"><a href="#Prometheus-配置" class="headerlink" title="Prometheus 配置"></a>Prometheus 配置</h3><p>在prometheus.yml文件下增加如下配置后，在Prometheus UI中应该就能看到target了。</p>
+<pre class="line-numbers language-none"><code class="language-none">- job_name: 'node_exporter'
+  scheme: https
+  tls_config:
+    ca_file: node_exporter.crt
+  static_configs:
+  - targets: ['localhost:9100']<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Prometheus/image-20220222214913716.png" alt="image-20220222214913716"></p>
+<p>生成密码，如果没有htpasswd命令，Centos7 安装命令 yum install -y httpd-tools。</p>
+<pre class="line-numbers language-none"><code class="language-none">这里我只用它来生成了密码 hash ， 没有传递用户名。
+# htpasswd -nBC 12 '' | tr -d ':\n'      <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>修改node_exporter的配置文件config.yaml。</p>
+<pre class="line-numbers language-none"><code class="language-none">tls_server_config:
+  cert_file: node_exporter.crt
+  key_file: node_exporter.key
+basic_auth_users:
+  # 当前设置的用户名为 prometheus ， 可以设置多个
+  prometheus: $2y$12$CTF/pW97pUAsm2iyMn4cJeWQV9cYxWWd1Nxs23.VFmHnuub31qfRu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>使用配置文件启动启动node_exporter。</p>
+<pre class="line-numbers language-none"><code class="language-none">./node_exporter --web.config=config.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>验证，将提示401。</p>
+<pre class="line-numbers language-none"><code class="language-none">#curl  -Ik https://localhost:9100/metrics
+HTTP/1.1 401 Unauthorized
+Content-Type: text/plain; charset=utf-8
+Www-Authenticate: Basic
+X-Content-Type-Options: nosniff
+Date: Tue, 22 Feb 2022 13:56:28 GMT
+Content-Length: 13<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="修改Prometheus-配置"><a href="#修改Prometheus-配置" class="headerlink" title="修改Prometheus 配置"></a>修改Prometheus 配置</h4><pre class="line-numbers language-none"><code class="language-none">- job_name: 'node_exporter'
+  scheme: https
+  tls_config:
+    ca_file: node_exporter.crt
+  basic_auth:
+    username: prometheus
+    password: prometheuspassword  
+  static_configs:
+  - targets: ['localhost:9100']<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改配置文件后，只要让 Prometheus 重新加载配置文件即可：</p>
+<pre class="line-numbers language-none"><code class="language-none">killall -HUP prometheus<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
                 
@@ -576,7 +622,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://guojunwengit.github.io/2022/01/13/%E5%89%91%E6%8C%87OfferII034-%E5%A4%96%E6%98%9F%E8%AF%AD%E8%A8%80%E6%98%AF%E5%90%A6%E6%8E%92%E5%BA%8F/">https://guojunwengit.github.io/2022/01/13/%E5%89%91%E6%8C%87OfferII034-%E5%A4%96%E6%98%9F%E8%AF%AD%E8%A8%80%E6%98%AF%E5%90%A6%E6%8E%92%E5%BA%8F/</a>
+                    <a href="https://guojunwengit.github.io/2022/02/22/PrometheusNodeExporterTLS%E8%AE%A4%E8%AF%81/">https://guojunwengit.github.io/2022/02/22/PrometheusNodeExporterTLS%E8%AE%A4%E8%AF%81/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,12 +660,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/leetcode/">
-                                    <span class="chip bg-color">leetcode</span>
+                                <a href="/tags/Prometheus-Node/">
+                                    <span class="chip bg-color">Prometheus Node</span>
                                 </a>
                             
-                                <a href="/tags/golang/">
-                                    <span class="chip bg-color">golang</span>
+                                <a href="/tags/Node-Exporter/">
+                                    <span class="chip bg-color">Node Exporter</span>
                                 </a>
                             
                         </div>
@@ -795,30 +841,30 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/01/15/1716-%E8%AE%A1%E7%AE%97%E5%8A%9B%E6%89%A3%E9%93%B6%E8%A1%8C%E7%9A%84%E9%92%B1/">
+                <a href="/2022/02/23/Centos7%E5%AE%89%E8%A3%85mysql/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="1716.计算力扣银行的钱">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg" class="responsive-img" alt="Centos7安装mysql8.0">
                         
-                        <span class="card-title">1716.计算力扣银行的钱</span>
+                        <span class="card-title">Centos7安装mysql8.0</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            1716.计算力扣银行的钱
+                            Centos7安装mysql8.0
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-23
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/leetcode/" class="post-category">
-                                    leetcode
+                            <a href="/categories/Mysql/" class="post-category">
+                                    Mysql
                                 </a>
                             
                             
@@ -828,12 +874,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/leetcode/">
-                        <span class="chip bg-color">leetcode</span>
-                    </a>
-                    
-                    <a href="/tags/golang/">
-                        <span class="chip bg-color">golang</span>
+                    <a href="/tags/Mysql/">
+                        <span class="chip bg-color">Mysql</span>
                     </a>
                     
                 </div>
@@ -847,47 +889,32 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/13/747-%E8%87%B3%E5%B0%91%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E4%B8%A4%E5%80%8D%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0/">
+                <a href="/2022/02/22/%E8%AE%A4%E8%AF%81/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg" class="responsive-img" alt="747.至少是其他数字两倍的最大数">
                         
-                        <span class="card-title">747.至少是其他数字两倍的最大数</span>
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="认证">
+                        
+                        <span class="card-title">认证</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            747.至少是其他数字两倍的最大数
+                            
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-22
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/leetcode/" class="post-category">
-                                    leetcode
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Junwen
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/leetcode/">
-                        <span class="chip bg-color">leetcode</span>
-                    </a>
-                    
-                    <a href="/tags/golng/">
-                        <span class="chip bg-color">golng</span>
-                    </a>
-                    
                 </div>
                 
             </div>
