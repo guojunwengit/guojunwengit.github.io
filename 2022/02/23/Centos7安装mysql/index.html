@@ -474,14 +474,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-03-08
+                    2022-03-14
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    231
+                    295
                 </div>
                 
 
@@ -521,8 +521,7 @@
 <p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223203237323.png" alt="image-20220223203237323"></p>
 <h3 id="启动mysql-服务"><a href="#启动mysql-服务" class="headerlink" title="启动mysql 服务"></a>启动mysql 服务</h3><pre class="line-numbers language-none"><code class="language-none">systemctl start mysqld<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="设置开机启动"><a href="#设置开机启动" class="headerlink" title="设置开机启动"></a>设置开机启动</h3><pre class="line-numbers language-none"><code class="language-none">systemctl enable mysqld
-systemctl daemon-reload<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="设置开机启动"><a href="#设置开机启动" class="headerlink" title="设置开机启动"></a>设置开机启动</h3><pre class="line-numbers language-none"><code class="language-none">systemctl enable mysqld<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="修改root登录密码"><a href="#修改root登录密码" class="headerlink" title="修改root登录密码"></a>修改root登录密码</h2><p>mysql安装完成之后，会在/var/log/mysqld.log文件中给root生成了一个临时的默认密码。</p>
 <pre class="line-numbers language-none"><code class="language-none">vim /var/log/mysqld.log<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -532,19 +531,26 @@ systemctl daemon-reload<span aria-hidden="true" class="line-numbers-rows"><span>
 <pre class="line-numbers language-none"><code class="language-none">mysql -u root -p<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>登录后，需要第一时间修改密码，但是如果是测试库的话，密码没必要设置的很复杂，就需要修改一下</p>
-<p>永久修改validate_password 参数</p>
-<pre class="line-numbers language-none"><code class="language-none"># vi /etc/my.cnf
+<p>永久修改validate_password 参数，修改完之后重启mysql服务</p>
+<pre class="line-numbers language-none"><code class="language-none"># systemctl restart mysqld
+# vi /etc/my.cnf
 
 validate_password.policy=0
 validate_password.length=4
 validate_password.number_count=0
 validate_password.mixed_case_count=0
-validate_password.special_char_count=0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+validate_password.special_char_count=0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改root用户密码。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">ALTER  USER  'root'@'localhost'  IDENTIFIED BY 'mysqlmysql';<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
 
 <p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223205301081.png" alt="image-20220223205301081"></p>
-<h3 id="设置远程登录"><a href="#设置远程登录" class="headerlink" title="设置远程登录"></a>设置远程登录</h3><pre class="line-numbers language-none"><code class="language-none">create user 'root'@'%' identified by '密码';
-grant all on *.* to 'root'@'%';
+<h3 id="设置远程登录"><a href="#设置远程登录" class="headerlink" title="设置远程登录"></a>设置远程登录</h3><p>默认的root用户只能当前节点localhost访问，是无法远程访问的，我们还需要创建一个root账户，用户远程访问。</p>
+<pre class="line-numbers language-none"><code class="language-none">create user 'root'@'%' identified by '密码';
 alter user 'root'@'%' identified with mysql_native_password by '密码';
+grant all on *.* to 'root'@'%';
 flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220223210225424.png" alt="image-20220223210225424"></p>
@@ -792,19 +798,18 @@ flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/02/28/Mysql%E5%9F%BA%E7%A1%80/">
+                <a href="/2022/02/28/SQL/">
                     <div class="card-image">
                         
+                        <img src="shttps://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg" class="responsive-img" alt="SQL">
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
-                        
-                        <span class="card-title"></span>
+                        <span class="card-title">SQL</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            SQL
                         
                     </div>
                     <div class="publish-info">
@@ -813,11 +818,27 @@ flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Junwen
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Mysql/" class="post-category">
+                                    Mysql
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Mysql/">
+                        <span class="chip bg-color">Mysql</span>
+                    </a>
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1011,7 +1032,7 @@ flush privileges;<span aria-hidden="true" class="line-numbers-rows"><span></span
                 
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">15k</span>
+                        class="white-color">16k</span>
             
             
             

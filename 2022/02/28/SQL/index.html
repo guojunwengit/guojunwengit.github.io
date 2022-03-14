@@ -321,7 +321,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/guojunwengit/images/golang/golang.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('shttps://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -478,21 +478,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-03-04
+                    2022-03-14
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    956
+                    1.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    7 分
                 </div>
                 
 
@@ -551,7 +551,7 @@
 <td align="center">数据控制语言，用来创建数据库用户、控制数据库的访问权限</td>
 </tr>
 </tbody></table>
-<h5 id="DDL-数据库操作"><a href="#DDL-数据库操作" class="headerlink" title="DDL 数据库操作"></a>DDL 数据库操作</h5><p>查询所有数据库</p>
+<h4 id="DDL-数据库操作"><a href="#DDL-数据库操作" class="headerlink" title="DDL 数据库操作"></a>DDL 数据库操作</h4><p>查询所有数据库</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">show</span> <span class="token keyword">databases</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/image-20220228201712701.png" alt="image-20220228201712701"></p>
@@ -774,14 +774,204 @@
 <pre class="line-numbers language-none"><code class="language-none">ALTER TABLE 表名 ADD 字段名 类型(长度) [COMMENT 注释] [约束];<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>修改数据类型</p>
-<pre class="line-numbers language-none"><code class="language-none">ALTER TABLE 表名 MODIFY 字段名 新数据类型(长度);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 <span class="token keyword">MODIFY</span> 字段名 新数据类型<span class="token punctuation">(</span>长度<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>修改字段名和字段类型</p>
-<pre class="line-numbers language-none"><code class="language-none">ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型(长度) [COMMENT 注释] [约束]；<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 CHANGE 旧字段名 新字段名 类型<span class="token punctuation">(</span>长度<span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token keyword">COMMENT</span> 注释<span class="token punctuation">]</span> <span class="token punctuation">[</span>约束<span class="token punctuation">]</span>；<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>修改表名</p>
-<pre class="line-numbers language-none"><code class="language-none">ALTER TABLE 表名 RENAME TO 新表名;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 <span class="token keyword">RENAME</span> <span class="token keyword">TO</span> 新表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
+<p>删除字段</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 <span class="token keyword">DROP</span> 字段名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Redis/image-20220308202525181.png" alt="image-20220308202525181"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Redis/image-20220308202754226.png" alt="image-20220308202754226"></p>
+<h5 id="DDL-表操作-删除"><a href="#DDL-表操作-删除" class="headerlink" title="DDL-表操作-删除"></a>DDL-表操作-删除</h5><p>删除表</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token punctuation">[</span><span class="token keyword">EXISTS</span><span class="token punctuation">]</span> 表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>删除指定表，并重新创建该表</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">TRUNCATE</span> <span class="token keyword">TABLE</span> 表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="DML-介绍"><a href="#DML-介绍" class="headerlink" title="DML 介绍"></a>DML 介绍</h4><p>DML英文全称是Data Manipulation Language(数据操作语言)，用来对数据库中表的数据记录进行增删改操作。</p>
+<ul>
+<li>添加数据（INSERT）</li>
+<li>修改数据（UPDATE</li>
+<li>修改数据（UPDATE</li>
+</ul>
+<h5 id="DML-添加数据"><a href="#DML-添加数据" class="headerlink" title="DML-添加数据"></a>DML-添加数据</h5><ul>
+<li><p>给指定字段添加数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> 表名 <span class="token punctuation">(</span>字段名<span class="token number">1</span><span class="token punctuation">,</span> 字段名<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token keyword">VALUES</span><span class="token punctuation">(</span>值<span class="token number">1</span><span class="token punctuation">,</span> 值<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>给全部字段添加数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> 表名 <span class="token keyword">VALUES</span> <span class="token punctuation">(</span>值<span class="token number">1</span><span class="token punctuation">,</span> 值<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>批量添加数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> 表名 <span class="token punctuation">(</span>字段名<span class="token number">1</span><span class="token punctuation">,</span> 字段名<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token keyword">VALUES</span><span class="token punctuation">(</span>值<span class="token number">1</span><span class="token punctuation">,</span> 值<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span>值<span class="token number">1</span><span class="token punctuation">,</span> 值<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span>值<span class="token number">1</span><span class="token punctuation">,</span> 值<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Redis/image-20220309154605439.png" alt="image-20220309154605439"></p>
+<h5 id="DML-修改数据"><a href="#DML-修改数据" class="headerlink" title="DML-修改数据"></a>DML-修改数据</h5><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">UPDATE</span> 表名 <span class="token keyword">SET</span> 字段名<span class="token number">1</span> <span class="token operator">=</span> 值<span class="token number">1</span><span class="token punctuation">,</span> 字段名<span class="token number">2</span> <span class="token operator">=</span> 值<span class="token number">2</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">[</span><span class="token keyword">WHERE</span> 条件<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>修改语句的条件可以有，也可以没有，如果没有条件，则会修改整张表的所有数据。</li>
+</ul>
+<h5 id="DML-删除数据"><a href="#DML-删除数据" class="headerlink" title="DML-删除数据"></a>DML-删除数据</h5><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> 表名 <span class="token punctuation">[</span><span class="token keyword">WHERE</span> 条件<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>DELETE 语句的条件可以有，也可以没有，如果没有条件，则会删除整张表的所有数据。</li>
+<li>DELETE 语句不能删除某一个字段的值(可以使用UPDATE)。</li>
+</ul>
+<h4 id="DQL-介绍"><a href="#DQL-介绍" class="headerlink" title="DQL-介绍"></a>DQL-介绍</h4><p>DQL英文全称是Data Query Language(数据查询语言)，数据查询语言，用来查询数据库中表的记录。</p>
+<p>查询关键字：SELECT</p>
+<h5 id="DQL-语法"><a href="#DQL-语法" class="headerlink" title="DQL-语法"></a>DQL-语法</h5><ul>
+<li>基本查询</li>
+<li>条件查询（WHERE）</li>
+<li>聚合函数（count、max、min、avg、sum）</li>
+<li> 分组查询（GROUP BY）</li>
+<li>排序查询（ORDER BY）</li>
+<li>分页查询（LIMIT）</li>
+</ul>
+<h5 id="DQL-基本查询"><a href="#DQL-基本查询" class="headerlink" title="DQL-基本查询"></a>DQL-基本查询</h5><ul>
+<li> 查询多个字段</li>
+</ul>
+  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 字段<span class="token number">1</span><span class="token punctuation">,</span> 字段<span class="token number">2</span><span class="token punctuation">,</span> 字段<span class="token number">3</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token keyword">FROM</span> 表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> 表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li><p>设置别名</p>
+<pre class="line-numbers language-none"><code class="language-none">SELECT 字段1 [AS 别名1], 字段2 [AS 别名2], 字段3 [AS 别名3], ... FROM 表名;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>去除重复记录</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> 字段列表 <span class="token keyword">FROM</span> 表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<p>*号代表查询所有字段，在实际开发中尽量少用（不直观、影响效率）。</p>
+<h5 id="DQL-条件查询"><a href="#DQL-条件查询" class="headerlink" title="DQL-条件查询"></a>DQL-条件查询</h5><ul>
+<li>语法</li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 字段列表 <span class="token keyword">FROM</span> 表名 <span class="token keyword">WHERE</span> 条件列表<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>条件</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">比较运算符</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&gt;</td>
+<td align="left">大于</td>
+</tr>
+<tr>
+<td align="left">&gt;=</td>
+<td align="left">大于等于</td>
+</tr>
+<tr>
+<td align="left">&lt;</td>
+<td align="left">小于</td>
+</tr>
+<tr>
+<td align="left">&lt;=</td>
+<td align="left">小于等于</td>
+</tr>
+<tr>
+<td align="left">=</td>
+<td align="left">等于</td>
+</tr>
+<tr>
+<td align="left">&lt;&gt; 或 !=</td>
+<td align="left">不等于</td>
+</tr>
+<tr>
+<td align="left">BETWEEN … AND …</td>
+<td align="left">在某个范围之内(含最小、最大值)</td>
+</tr>
+<tr>
+<td align="left">IN(…)</td>
+<td align="left">在in之后的列表中的值，多选一</td>
+</tr>
+<tr>
+<td align="left">LIKE 占位符</td>
+<td align="left">模糊匹配(_匹配单个字符, %匹配任意个字符)</td>
+</tr>
+<tr>
+<td align="left">IS NULL</td>
+<td align="left">是NULL</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">逻辑运算符</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">AND 或 &amp;&amp;</td>
+<td align="left">并且 (多个条件同时成立)</td>
+</tr>
+<tr>
+<td align="left">OR 或 ||</td>
+<td align="left">或者 (多个条件任意一个成立)</td>
+</tr>
+<tr>
+<td align="left">NOT 或 !</td>
+<td align="left">非 , 不是</td>
+</tr>
+</tbody></table>
+<h5 id="DQL-聚合函数"><a href="#DQL-聚合函数" class="headerlink" title="DQL-聚合函数"></a>DQL-聚合函数</h5><ul>
+<li><p>介绍</p>
+<p>将一列数据作为一个整体，进行纵向计算 。</p>
+</li>
+<li><p>常见聚合函数</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count</td>
+<td>统计数量</td>
+</tr>
+<tr>
+<td>max</td>
+<td>最大值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>最小值</td>
+</tr>
+<tr>
+<td>avg</td>
+<td>平均值</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>求和</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>语法</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 聚合函数<span class="token punctuation">(</span>字段列表<span class="token punctuation">)</span> <span class="token keyword">FROM</span> 表名<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h5 id="DQL-分组查询"><a href="#DQL-分组查询" class="headerlink" title="DQL-分组查询"></a>DQL-分组查询</h5><ul>
+<li><p>语法</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 字段列表 <span class="token keyword">FROM</span> 表名 <span class="token punctuation">[</span><span class="token keyword">WHERE</span> 条件<span class="token punctuation">]</span> <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> 分组字段名 <span class="token punctuation">[</span><span class="token keyword">HAVING</span> 分组后过滤条件<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>where与having区别</p>
+<ul>
+<li>执行时机不同：where是分组之前进行过滤，不满足where条件，不参与分组；而having是分组之后对结果进行过滤。</li>
+<li>判断条件不同：where不能对聚合函数进行判断，而having可以。</li>
+</ul>
+</li>
+<li><p>注意</p>
+<ul>
+<li>执行顺序: where &gt; 聚合函数 &gt; having 。</li>
+<li>分组之后，查询的字段一般为聚合函数和分组字段，查询其他字段无任何意义。</li>
+</ul>
+</li>
+</ul>
 
                 
             </div>
@@ -1075,32 +1265,43 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/28/Mysql%E5%9F%BA%E7%A1%80/">
+                <a href="/2022/02/23/Centos7%E5%AE%89%E8%A3%85mysql/">
                     <div class="card-image">
                         
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg" class="responsive-img" alt="Centos7安装mysql8.0">
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
-                        
-                        <span class="card-title"></span>
+                        <span class="card-title">Centos7安装mysql8.0</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            Centos7安装mysql8.0
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-28
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-23
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Junwen
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Mysql/" class="post-category">
+                                    Mysql
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Mysql/">
+                        <span class="chip bg-color">Mysql</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1242,7 +1443,7 @@
                 
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">15k</span>
+                        class="white-color">16k</span>
             
             
             
