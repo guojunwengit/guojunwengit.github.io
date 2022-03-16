@@ -478,21 +478,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-03-14
+                    2022-03-16
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.8k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    9 分
                 </div>
                 
 
@@ -972,6 +972,139 @@
 </ul>
 </li>
 </ul>
+<h5 id="DQL-排序查询"><a href="#DQL-排序查询" class="headerlink" title="DQL-排序查询"></a>DQL-排序查询</h5><ul>
+<li><p>语法</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 字段列表 <span class="token keyword">FROM</span> 表名 <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> 字段<span class="token number">1</span> 排序方式<span class="token number">1</span><span class="token punctuation">,</span> 字段<span class="token number">2</span> 排序方式<span class="token number">2</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>排序方式</p>
+<ul>
+<li>ASC：升序 (默认值)</li>
+<li>DESC：降序</li>
+</ul>
+</li>
+<li><p>注意</p>
+<p>如果是多字段排序，当第一个字段值相同时，才会根据第二个字段进行排序。</p>
+</li>
+</ul>
+<h5 id="DQL-分页查询"><a href="#DQL-分页查询" class="headerlink" title="DQL-分页查询"></a>DQL-分页查询</h5><ul>
+<li><p>语法</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 字段列表 <span class="token keyword">FROM</span> 表名 <span class="token keyword">LIMIT</span> 起始索引<span class="token punctuation">,</span> 查询记录数<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>注意</p>
+<ul>
+<li> 起始索引从0开始，起始索引 = （查询页码 - 1）* 每页显示记录数。</li>
+<li> 分页查询是数据库的方言，不同的数据库有不同的实现，MySQL中是LIMIT。</li>
+<li> 如果查询的是第一页数据，起始索引可以省略，直接简写为 limit 10。</li>
+</ul>
+</li>
+</ul>
+<h5 id="DQL-执行顺序"><a href="#DQL-执行顺序" class="headerlink" title="DQL-执行顺序"></a>DQL-执行顺序</h5><p>编写顺序</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 
+	字段列表
+<span class="token keyword">FROM</span> 
+	表名列表
+<span class="token keyword">WHERE</span> 
+	条件列表
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span>
+	分组字段列表
+<span class="token keyword">HAVING</span> 
+	分组后条件列表
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> 
+	排序字段列表
+<span class="token keyword">LIMIT</span>
+	分页参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>执行顺序</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">FROM</span> 
+	表名列表
+<span class="token keyword">WHERE</span> 
+	条件列表
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span>
+	分组字段列表
+<span class="token keyword">HAVING</span> 
+	分组后条件列表
+<span class="token keyword">SELECT</span> 
+	字段列表
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> 
+	排序字段列表
+<span class="token keyword">LIMIT</span>
+	分页参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="DCL-介绍"><a href="#DCL-介绍" class="headerlink" title="DCL-介绍"></a>DCL-介绍</h4><p>DCL英文全称是Data Control Language(数据控制语言)，用来管理数据用户、控制数据库的访问权限。</p>
+<h5 id="DCL-管理用户"><a href="#DCL-管理用户" class="headerlink" title="DCL-管理用户"></a>DCL-管理用户</h5><ul>
+<li><p>查询用户</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">USE</span> mysql<span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token keyword">user</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li><p>创建用户</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">USER</span> <span class="token string">'用户名'</span><span class="token variable">@'主机名'</span> IDENTIFIED <span class="token keyword">BY</span> <span class="token string">'密码'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>修改用户密码</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">USER</span> <span class="token string">'用户名'</span><span class="token variable">@'主机名'</span> IDENTIFIED <span class="token keyword">WiTH</span> mysql_native_password <span class="token keyword">BY</span> <span class="token string">'新密码'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>删除用户</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">DROP</span> <span class="token keyword">USER</span> <span class="token string">'用户名'</span><span class="token variable">@'主机名'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>注意</p>
+<ul>
+<li> 主机名可以使用 % 通配。</li>
+<li>这类SQL开发人员操作的比较少，主要是DBA（ Database Administrator 数据库管理员）使用。</li>
+</ul>
+</li>
+</ul>
+<h5 id="DCL-权限控制"><a href="#DCL-权限控制" class="headerlink" title="DCL-权限控制"></a>DCL-权限控制</h5><table>
+<thead>
+<tr>
+<th>权限</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ALL, ALL PRIVILEGES</td>
+<td>所有权限</td>
+</tr>
+<tr>
+<td>SELECT</td>
+<td>查询数据</td>
+</tr>
+<tr>
+<td>INSERT</td>
+<td>插入数据</td>
+</tr>
+<tr>
+<td>UPDATE</td>
+<td>修改数据</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除数据</td>
+</tr>
+<tr>
+<td>ALTER</td>
+<td>修改表</td>
+</tr>
+<tr>
+<td>DROP</td>
+<td>删除数据库/表/视图</td>
+</tr>
+<tr>
+<td>CREATE</td>
+<td>创建数据库/表</td>
+</tr>
+</tbody></table>
+<h5 id="DCL-权限控制-1"><a href="#DCL-权限控制-1" class="headerlink" title="DCL-权限控制"></a>DCL-权限控制</h5><ul>
+<li> 查询权限</li>
+</ul>
+  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SHOW</span> GRANTS <span class="token keyword">FOR</span> <span class="token string">'用户名'</span><span class="token variable">@'主机名'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li><p>授予权限</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">GRANT</span> 权限列表 <span class="token keyword">ON</span> 数据库名<span class="token punctuation">.</span>表名 <span class="token keyword">TO</span> <span class="token string">'用户名'</span><span class="token variable">@'主机名'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>撤销权限</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">REVOKE</span> 权限列表 <span class="token keyword">ON</span> 数据库名<span class="token punctuation">.</span>表名 <span class="token keyword">FROM</span> <span class="token string">'用户名'</span><span class="token variable">@'主机名'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>注意</p>
+<ul>
+<li> 多个权限之间，使用逗号分隔</li>
+<li> 授权时， 数据库名和表名可以使用 * 进行通配，代表所有。</li>
+</ul>
+</li>
+</ul>
 
                 
             </div>
@@ -1443,7 +1576,7 @@
                 
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">16k</span>
+                        class="white-color">16.5k</span>
             
             
             
