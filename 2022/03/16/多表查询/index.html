@@ -479,21 +479,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-03-16
+                    2022-04-11
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    98
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -516,7 +516,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h3><ul>
+                <h3 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h3><h4 id="多表关系"><a href="#多表关系" class="headerlink" title="多表关系"></a>多表关系</h4><ul>
 <li><p>概述</p>
 <p>项目开发中，在进行数据库表结构设计时，会根据业务需求及业务模块之间的关系，分析并设计表结构，由于业务之间相互关联，所 以各个表结构之间也存在着各种联系，基本上分为三种：</p>
 <ul>
@@ -526,7 +526,138 @@
 </ul>
 </li>
 </ul>
-<h4 id="多表关系"><a href="#多表关系" class="headerlink" title="多表关系"></a>多表关系</h4>
+<ul>
+<li><p>一对多(多对一)</p>
+<ul>
+<li>案列：部门与员工的关系</li>
+<li>关系: 一个部门对应多个员工，一个员工对应一个部门</li>
+<li>实现: 在多的一方建立外键，指向一的一方的主键</li>
+</ul>
+</li>
+<li><p>多对多</p>
+<ul>
+<li>案例: 学生 与 课程的关系</li>
+<li>关系: 一个学生可以选修多门课程，一门课程也可以供多个学生选择</li>
+<li>实现: 建立第三张中间表，中间表至少包含两个外键，分别关联两方主键</li>
+</ul>
+</li>
+<li><p>一对一</p>
+<ul>
+<li>案例: 用户 与 用户详情的关系</li>
+<li>关系: 一对一关系，多用于单表拆分，将一张表的基础字段放在一张表中，其他详情字段放在另一张表中，以提升操作效率</li>
+<li>实现: 在任意一方加入外键，关联另外一方的主键，并且设置外键为唯一的(UNIQUE)</li>
+</ul>
+</li>
+</ul>
+<h4 id="多表查询概述"><a href="#多表查询概述" class="headerlink" title="多表查询概述"></a>多表查询概述</h4><ul>
+<li><p>概述：指从多张表中查询数据</p>
+</li>
+<li><p>笛卡尔积：笛卡尔乘积是指在数学中，两个集合A集合 和 B集合的所有组合情况。(在多表查询时，需要消除无效的笛卡尔积)</p>
+</li>
+<li><p>多表查询分类</p>
+<ul>
+<li>连接查询<ul>
+<li>内连接：相当于查询A、B交集部分数据</li>
+<li>外连接：<ul>
+<li>左外连接：查询左表所有数据，以及两张表交集部分数据</li>
+<li>右外连接：查询右表所有数据，以及两张表交集部分数据</li>
+</ul>
+</li>
+<li>自连接：当前表与自身的连接查询，自连接必须使用表别名</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="连接查询-内连接"><a href="#连接查询-内连接" class="headerlink" title="连接查询-内连接"></a>连接查询-内连接</h4><p>内连接查询语法:</p>
+<ul>
+<li><p>隐式内连接</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表<span class="token number">1</span><span class="token punctuation">,</span> 表<span class="token number">2</span> <span class="token keyword">where</span> 条件<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>显式内连接</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表<span class="token number">1</span> <span class="token punctuation">[</span><span class="token keyword">inner</span><span class="token punctuation">]</span> <span class="token keyword">join</span> 表<span class="token number">2</span> <span class="token keyword">on</span> 连接条件<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>内连接查询的是两张表交集的部分</p>
+</li>
+</ul>
+<h4 id="连接查询-外连接"><a href="#连接查询-外连接" class="headerlink" title="连接查询-外连接"></a>连接查询-外连接</h4><p>外连接查询语法：</p>
+<ul>
+<li><p>左外连接</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表<span class="token number">1</span> <span class="token keyword">left</span> <span class="token punctuation">[</span><span class="token keyword">outer</span><span class="token punctuation">]</span> <span class="token keyword">join</span> 表<span class="token number">2</span> <span class="token keyword">on</span> 条件<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>相当于查询表1(左表)的所有数据 包含 表1和表2交集部分的数据</p>
+</li>
+<li><p>右外链接</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表<span class="token number">1</span> <span class="token keyword">right</span> <span class="token punctuation">[</span><span class="token keyword">outer</span><span class="token punctuation">]</span> <span class="token keyword">join</span> 表<span class="token number">2</span> <span class="token keyword">on</span> 条件<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>相当于查询表2(右表)的所有数据 包含 表1和表2交集部分的数据</p>
+</li>
+</ul>
+<h4 id="连接查询-自连接"><a href="#连接查询-自连接" class="headerlink" title="连接查询-自连接"></a>连接查询-自连接</h4><p>自连接查询语法:</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表A 别名A <span class="token keyword">join</span> 表A 别名B <span class="token keyword">on</span> 条件<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>自连接查询，可以是内连接查询，也可以是外连接查询。</p>
+<h4 id="联合查询-union-union-all"><a href="#联合查询-union-union-all" class="headerlink" title="联合查询-union , union all"></a>联合查询-union , union all</h4><p>对于union查询，就是把多次查询的结果合并起来，形成一个新的查询结果集。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表A <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">union</span> <span class="token punctuation">[</span><span class="token keyword">all</span><span class="token punctuation">]</span>
+<span class="token keyword">select</span> 字段列表 <span class="token keyword">from</span> 表b <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>对于联合查询的多张表的列数必须保持一致，字段类型也需要保持一致。<br>union all 会将全部的数据直接合并在一起，union 会对合并之后的数据去重。</p>
+<h4 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h4><ul>
+<li><p>概念：SQL语句中嵌套SELECT语句，称为嵌套查询，又称子查询。</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> t1 <span class="token keyword">where</span> column1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">select</span> column1 <span class="token keyword">from</span> t2<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>子查询外部的语句可以是INSERT / UPDATE / DELETE / SELECT 的任何一个。</p>
+</li>
+<li><p>根据子查询结果不同，分为：</p>
+<ul>
+<li>标量子查询（子查询结果为单个值）</li>
+<li> 列子查询(子查询结果为一列)</li>
+<li>行子查询(子查询结果为一行)</li>
+<li>表子查询(子查询结果为多行多列)</li>
+</ul>
+</li>
+<li><p> 根据子查询位置，分为：WHERE之后 、FROM之后、SELECT 之后。</p>
+</li>
+<li><p>标量子查询</p>
+<p>子查询返回的结果是单个值（数字、字符串、日期等），最简单的形式，这种子查询称为标量子查询。<br>常用的操作符：= &lt;&gt; &gt; &gt;= &lt; &lt;= </p>
+</li>
+<li><p>列子查询</p>
+<p>子查询返回的结果是一列（可以是多行），这种子查询称为列子查询。<br>常用的操作符：IN 、NOT IN 、 ANY 、SOME 、 ALL</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IN</td>
+<td>在指定的集合范围之内，多选一</td>
+</tr>
+<tr>
+<td>NOT IN</td>
+<td>不在指定的集合范围之内</td>
+</tr>
+<tr>
+<td>ANY</td>
+<td>子查询返回列表中，有任意一个满足即可</td>
+</tr>
+<tr>
+<td>SOME</td>
+<td>与ANY等同，使用SOME的地方都可以使用ANY</td>
+</tr>
+<tr>
+<td>ALL</td>
+<td>子查询返回列表的所有值都必须满足</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>行子查询<br>子查询返回的结果是一行（可以是多列），这种子查询称为行子查询。<br>常用的操作符：= 、&lt;&gt; 、IN 、NOT IN</p>
+</li>
+<li><p>表子查询<br>子查询返回的结果是多行多列，这种子查询称为表子查询。<br>常用的操作符：IN</p>
+</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -767,29 +898,28 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/03/16/%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/">
+                <a href="/2022/04/11/%E4%BA%8B%E5%8A%A1/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg" class="responsive-img" alt="多表查询">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg" class="responsive-img" alt="事务">
                         
-                        <span class="card-title">多表查询</span>
+                        <span class="card-title">事务</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            多表查询
+                            事务
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-16
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-11
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -802,7 +932,6 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -810,8 +939,8 @@
                         <span class="chip bg-color">Mysql</span>
                     </a>
                     
-                    <a href="/tags/%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/">
-                        <span class="chip bg-color">多表查询</span>
+                    <a href="/tags/%E4%BA%8B%E5%8A%A1/">
+                        <span class="chip bg-color">事务</span>
                     </a>
                     
                 </div>
@@ -1007,7 +1136,7 @@
                 
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">17.8k</span>
+                        class="white-color">19.3k</span>
             
             
             
