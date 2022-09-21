@@ -4,8 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="一、kubernetes介绍, Junwen&#39;Blog">
-    <meta name="description" content="kubernetes介绍">
+    <meta name="keywords" content="二、kubernetes集群环境搭建, Junwen&#39;Blog">
+    <meta name="description" content="kubernetes集群环境搭建">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>一、kubernetes介绍 | Junwen&#39;Blog</title>
+    <title>二、kubernetes集群环境搭建 | Junwen&#39;Blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -327,7 +327,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">一、kubernetes介绍</h1>
+                    <h1 class="description center-align post-title">二、kubernetes集群环境搭建</h1>
                 </div>
             </div>
         </div>
@@ -475,21 +475,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-09-07
+                    2022-09-08
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    2.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    10 分
                 </div>
                 
 
@@ -512,96 +512,312 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="kubernetes介绍"><a href="#kubernetes介绍" class="headerlink" title="kubernetes介绍"></a>kubernetes介绍</h1><h2 id="应用部署方式演变"><a href="#应用部署方式演变" class="headerlink" title="应用部署方式演变"></a>应用部署方式演变</h2><p>在部署应用程序的方式上，主要经历了三个时代：</p>
+                <h2 id="环境规划"><a href="#环境规划" class="headerlink" title="环境规划"></a>环境规划</h2><h3 id="集群类型"><a href="#集群类型" class="headerlink" title="集群类型"></a>集群类型</h3><p>kubernetes集群大体上分为两类：<strong>一主多从</strong>和<strong>多主多从</strong>。</p>
 <ul>
-<li><p><strong>传统部署</strong>：互联网早期，会直接将应用程序部署在物理机上</p>
+<li>一主多从：一台Master节点和多台Node节点，搭建简单，但是有单机故障风险，适合用于测试环境</li>
+<li>多主多从：多台Master节点和多台Node节点，搭建麻烦，安全性高，适合用于生产环境</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907235044030.png" alt="image-20220907235044030"></p>
 <blockquote>
-<p>优点：简单，不需要其它技术的参与</p>
-<p>缺点：不能为应用程序定义资源使用边界，很难合理地分配计算资源，而且程序之间容易产生影响</p>
+<p><code>说明：为了测试简单，本次搭建的是  一主两从   类型的集群</code></p>
 </blockquote>
+<h3 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h3><p>kubernetes有多种部署方式，目前主流的方式有kubeadm、minikube、二进制包</p>
+<ul>
+<li>minikube：一个用于快速搭建单节点kubernetes的工具</li>
+<li>kubeadm：一个用于快速搭建kubernetes集群的工具</li>
+<li>二进制包 ：从官网下载每个组件的二进制包，依次去安装，此方式对于理解kubernetes组件更加有效</li>
+</ul>
+<blockquote>
+<p><code>说明：现在需要安装kubernetes的集群环境，但是又不想过于麻烦，所以选择使用kubeadm方式</code></p>
+</blockquote>
+<h3 id="主机规划"><a href="#主机规划" class="headerlink" title="主机规划"></a>主机规划</h3><table>
+<thead>
+<tr>
+<th>作用</th>
+<th>IP地址</th>
+<th>操作系统</th>
+<th>配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Master</td>
+<td>192.168.80.101</td>
+<td>Centos7.9    基础设施服务器</td>
+<td>2颗CPU  2G内存   50G硬盘</td>
+</tr>
+<tr>
+<td>Node1</td>
+<td>192.168.109.102</td>
+<td>Centos7.9    基础设施服务器</td>
+<td>2颗CPU  2G内存   50G硬盘</td>
+</tr>
+<tr>
+<td>Node2</td>
+<td>192.168.109.103</td>
+<td>Centos7.9    基础设施服务器</td>
+<td>2颗CPU  2G内存   50G硬盘</td>
+</tr>
+</tbody></table>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>​    本次环境搭建需要安装三台Centos服务器（一主二从），然后在每台服务器中分别安装docker（18.06.3），kubeadm（1.17.4）、kubelet（1.17.4）、kubectl（1.17.4）程序。</p>
+<h3 id="主机安装"><a href="#主机安装" class="headerlink" title="主机安装"></a>主机安装</h3><p>安装虚拟机过程中注意下面选项的设置：</p>
+<ul>
+<li><p>操作系统环境：CPU（2C）    内存（2G）   硬盘（50G）    </p>
 </li>
-<li><p><strong>虚拟化部署</strong>：可以在一台物理机上运行多个虚拟机，每个虚拟机都是独立的一个环境</p>
-<blockquote>
-<p>优点：程序环境不会相互产生影响，提供了一定程度的安全性</p>
-<p>缺点：增加了操作系统，浪费了部分资源</p>
-</blockquote>
+<li><p>语言选择：中文简体</p>
 </li>
-<li><p><strong>容器化部署</strong>：与虚拟化类似，但是共享了操作系统</p>
-<blockquote>
-<p>优点：</p>
-<p>​    可以保证每个容器拥有自己的文件系统、CPU、内存、进程空间等</p>
-<p>​    运行应用程序所需要的资源都被容器包装，并和底层基础架构解耦</p>
-<p>​    容器化的应用程序可以跨云服务商、跨Linux操作系统发行版进行部署</p>
-</blockquote>
+<li><p>软件选择：基础设施服务器</p>
+</li>
+<li><p>分区选择：自动分区</p>
+</li>
+<li><p>网络配置：按照下面配置网路地址信息</p>
+<pre class="line-numbers language-md" data-language="md"><code class="language-md">网络地址：192.168.80.100  （每台主机都不一样  分别为100、101、102）
+子网掩码：255.255.255.0
+默认网关：192.168.80.2
+DNS：    114.114.114.114<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220908000425085.png" alt="image-20220908000425085"></p>
+</li>
+<li><p>主机名设置：按照下面信息设置主机名</p>
+<pre class="line-numbers language-md" data-language="md"><code class="language-md">master节点： master
+node节点：   node1
+node节点：   node2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220908000508046.png" alt="image-20220908000508046"></p>
 </li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907232843614.png" alt="image-20220907232843614"></p>
-<p>容器化部署方式给带来很多的便利，但是也会出现一些问题，比如说：</p>
-<ul>
-<li>一个容器故障停机了，怎么样让另外一个容器立刻启动去替补停机的容器</li>
-<li>当并发访问量变大的时候，怎么样做到横向扩展容器数量</li>
-</ul>
-<p>这些容器管理的问题统称为<strong>容器编排</strong>问题，为了解决这些容器编排问题，就产生了一些容器编排的软件：</p>
-<ul>
-<li><strong>Swarm</strong>：Docker自己的容器编排工具</li>
-<li><strong>Mesos</strong>：Apache的一个资源统一管控的工具，需要和Marathon结合使用</li>
-<li><strong>Kubernetes</strong>：Google开源的的容器编排工具</li>
-</ul>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907232911612.png" alt="image-20220907232911612"></p>
-<h2 id="kubernetes简介"><a href="#kubernetes简介" class="headerlink" title="kubernetes简介"></a>kubernetes简介</h2><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907232936826.png" alt="image-20220907232936826"></p>
-<p>​    </p>
-<p>​    kubernetes，是一个全新的基于容器技术的分布式架构领先方案，是谷歌严格保密十几年的秘密武器—-Borg系统的一个开源版本，于2014年9月发布第一个版本，2015年7月发布第一个正式版本。</p>
-<p>​    kubernetes的本质是<strong>一组服务器集群</strong>，它可以在集群的每个节点上运行特定的程序，来对节点中的容器进行管理。目的是实现资源管理的自动化，主要提供了如下的主要功能：</p>
-<ul>
-<li><strong>自我修复</strong>：一旦某一个容器崩溃，能够在1秒中左右迅速启动新的容器</li>
-<li><strong>弹性伸缩</strong>：可以根据需要，自动对集群中正在运行的容器数量进行调整</li>
-<li><strong>服务发现</strong>：服务可以通过自动发现的形式找到它所依赖的服务</li>
-<li><strong>负载均衡</strong>：如果一个服务起动了多个容器，能够自动实现请求的负载均衡</li>
-<li><strong>版本回退</strong>：如果发现新发布的程序版本有问题，可以立即回退到原来的版本</li>
-<li><strong>存储编排</strong>：可以根据容器自身的需求自动创建存储卷</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907232950480.png">https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907232950480.png</a></p>
-<h2 id="kubernetes组件"><a href="#kubernetes组件" class="headerlink" title="kubernetes组件"></a>kubernetes组件</h2><p>一个kubernetes集群主要是由**控制节点(master)<strong>、</strong>工作节点(node)**构成，每个节点上都会安装不同的组件。</p>
-<p><strong>master：集群的控制平面，负责集群的决策  (  管理  )</strong></p>
-<blockquote>
-<p><strong>ApiServer</strong> : 资源操作的唯一入口，接收用户输入的命令，提供认证、授权、API注册和发现等机制</p>
-<p><strong>Scheduler</strong> : 负责集群资源调度，按照预定的调度策略将Pod调度到相应的node节点上</p>
-<p><strong>ControllerManager</strong> : 负责维护集群的状态，比如程序部署安排、故障检测、自动扩展、滚动更新等</p>
-<p>**Etcd **：负责存储集群中各种资源对象的信息</p>
-</blockquote>
-<p>**node：集群的数据平面，负责为容器提供运行环境 ( 干活 ) **</p>
-<blockquote>
-<p><strong>Kubelet</strong> : 负责维护容器的生命周期，即通过控制docker，来创建、更新、销毁容器</p>
-<p><strong>KubeProxy</strong> : 负责提供集群内部的服务发现和负载均衡</p>
-<p><strong>Docker</strong> : 负责节点上容器的各种操作</p>
-</blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907233056017.png" alt="image-20220907233056017"></p>
-<p>下面，以部署一个nginx服务来说明kubernetes系统各个组件调用关系：</p>
-<ol>
-<li><p>首先要明确，一旦kubernetes环境启动之后，master和node都会将自身的信息存储到etcd数据库中</p>
-</li>
-<li><p>一个nginx服务的安装请求会首先被发送到master节点的apiServer组件</p>
-</li>
-<li><p>apiServer组件会调用scheduler组件来决定到底应该把这个服务安装到哪个node节点上</p>
-<p>在此时，它会从etcd中读取各个node节点的信息，然后按照一定的算法进行选择，并将结果告知apiServer</p>
-</li>
-<li><p>apiServer调用controller-manager去调度Node节点安装nginx服务</p>
-</li>
-<li><p>kubelet接收到指令后，会通知docker，然后由docker来启动一个nginx的pod</p>
-<p>pod是kubernetes的最小操作单元，容器必须跑在pod中至此，</p>
-</li>
-<li><p>一个nginx服务就运行了，如果需要访问nginx，就需要通过kube-proxy来对pod产生访问的代理</p>
-</li>
+<h3 id="环境初始化"><a href="#环境初始化" class="headerlink" title="环境初始化"></a>环境初始化</h3><ol>
+<li>   检查操作系统的版本</li>
 </ol>
-<p>​        这样，外界用户就可以访问集群中的nginx服务了</p>
-<h2 id="kubernetes概念"><a href="#kubernetes概念" class="headerlink" title="kubernetes概念"></a>kubernetes概念</h2><p><strong>Master</strong>：集群控制节点，每个集群需要至少一个master节点负责集群的管控</p>
-<p><strong>Node</strong>：工作负载节点，由master分配容器到这些node工作节点上，然后node节点上的docker负责容器的运行</p>
-<p><strong>Pod</strong>：kubernetes的最小控制单元，容器都是运行在pod中的，一个pod中可以有1个或者多个容器</p>
-<p><strong>Controller</strong>：控制器，通过它来实现对pod的管理，比如启动pod、停止pod、伸缩pod的数量等等</p>
-<p><strong>Service</strong>：pod对外服务的统一入口，下面可以维护者同一类的多个pod</p>
-<p><strong>Label</strong>：标签，用于对pod进行分类，同一类pod会拥有相同的标签</p>
-<p><strong>NameSpace</strong>：命名空间，用来隔离pod的运行环境</p>
-<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907233455874.png" alt="image-20220907233455874"></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 此方式下安装kubernetes集群要求Centos版本要在7.5或之上</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># cat /etc/redhat-release</span>
+CentOS Linux release 7<span class="token punctuation">.</span>9<span class="token punctuation">.</span>2009 <span class="token punctuation">(</span>Core<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>2） 主机名解析</p>
+<p>为了方便后面集群节点间的直接调用，在这配置一下主机名解析，企业中推荐使用内部DNS服务器</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 主机名成解析 编辑三台服务器的/etc/hosts文件，添加下面内容</span>
+192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>80<span class="token punctuation">.</span>100  master
+192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>80<span class="token punctuation">.</span>101  node1
+192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>80<span class="token punctuation">.</span>102  node2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>3） 时间同步</p>
+<p>kubernetes要求集群中的节点时间必须精确一致，这里直接使用chronyd服务从网络同步时间。</p>
+<p>企业中建议配置内部的时间同步服务器</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 启动chronyd服务</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl start chronyd</span>
+<span class="token comment"># 设置chronyd服务开机自启</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl enable chronyd</span>
+<span class="token comment"># chronyd服务启动稍等几秒钟，就可以使用date命令验证时间了</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># date</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>4） 禁用iptables和firewalld服务</p>
+<p>kubernetes和docker在运行中会产生大量的iptables规则，为了不让系统规则跟它们混淆，直接关闭系统的规则</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 1 关闭firewalld服务</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl stop firewalld</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl disable firewalld</span>
+<span class="token comment"># 2 关闭iptables服务</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl stop iptables</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl disable iptables</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>5） 禁用selinux</p>
+<p> selinux是linux系统下的一个安全服务，如果不关闭它，在安装集群中会产生各种各样的奇葩问题</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 编辑 /etc/selinux/config 文件，修改SELINUX的值为disabled</span>
+<span class="token comment"># 注意修改完毕之后需要重启linux服务</span>
+SELINUX=disabled<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>6） 禁用swap分区</p>
+<p>swap分区指的是虚拟内存分区，它的作用是在物理内存使用完之后，将磁盘空间虚拟成内存来使用</p>
+<p>启用swap设备会对系统的性能产生非常负面的影响，因此kubernetes要求每个节点都要禁用swap设备</p>
+<p>但是如果因为某些原因确实不能关闭swap分区，就需要在集群安装过程中通过明确的参数进行配置说明</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 编辑分区配置文件/etc/fstab，注释掉swap分区一行</span>
+<span class="token comment"># 注意修改完毕之后需要重启linux服务</span>
+ UUID=455cc753<span class="token operator">-</span>7a60<span class="token operator">-</span>4c17<span class="token operator">-</span>a424<span class="token operator">-</span>7741728c44a1 <span class="token operator">/</span>boot    xfs     defaults        0 0
+ <span class="token operator">/</span>dev<span class="token operator">/</span>mapper<span class="token operator">/</span>centos<span class="token operator">-</span>home <span class="token operator">/</span>home                      xfs     defaults        0 0
+<span class="token comment"># /dev/mapper/centos-swap swap                      swap    defaults        0 0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>7）修改linux的内核参数</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 修改linux的内核参数，添加网桥过滤和地址转发功能</span>
+<span class="token comment"># 编辑/etc/sysctl.d/kubernetes.conf文件，添加如下配置:</span>
+net<span class="token punctuation">.</span>bridge<span class="token punctuation">.</span>bridge<span class="token operator">-</span>nf<span class="token operator">-</span>call<span class="token operator">-</span>ip6tables = 1
+net<span class="token punctuation">.</span>bridge<span class="token punctuation">.</span>bridge<span class="token operator">-</span>nf<span class="token operator">-</span>call<span class="token operator">-</span>iptables = 1
+net<span class="token punctuation">.</span>ipv4<span class="token punctuation">.</span>ip_forward = 1
+
+<span class="token comment"># 重新加载配置</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># sysctl -p</span>
+
+<span class="token comment"># 加载网桥过滤模块</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># modprobe br_netfilter</span>
+
+<span class="token comment"># 查看网桥过滤模块是否加载成功</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># lsmod | grep br_netfilter</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>8）配置ipvs功能</p>
+<p>在kubernetes中service有两种代理模型，一种是基于iptables的，一种是基于ipvs的</p>
+<p>两者比较的话，ipvs的性能明显要高一些，但是如果要使用它，需要手动载入ipvs模块</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 1 安装ipset和ipvsadm</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># yum install ipset ipvsadmin -y</span>
+
+<span class="token comment"># 2 添加需要加载的模块写入脚本文件</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># cat &lt;&lt;EOF &gt;  /etc/sysconfig/modules/ipvs.modules</span>
+<span class="token comment">#!/bin/bash</span>
+modprobe <span class="token operator">--</span> ip_vs
+modprobe <span class="token operator">--</span> ip_vs_rr
+modprobe <span class="token operator">--</span> ip_vs_wrr
+modprobe <span class="token operator">--</span> ip_vs_sh
+modprobe <span class="token operator">--</span> nf_conntrack_ipv4
+EOF
+
+<span class="token comment"># 3 为脚本文件添加执行权限</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># chmod +x /etc/sysconfig/modules/ipvs.modules</span>
+
+<span class="token comment"># 4 执行脚本文件</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># /bin/bash /etc/sysconfig/modules/ipvs.modules</span>
+
+<span class="token comment"># 5 查看对应的模块是否加载成功</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># lsmod | grep -e ip_vs -e nf_conntrack_ipv4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>9） 重启服务器</p>
+<p>上面步骤完成之后，需要重新启动linux系统</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[root@master ~]</span><span class="token comment"># reboot</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 1 切换镜像源</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo</span>
+
+<span class="token comment"># 2 查看当前镜像源中支持的docker版本</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># yum list docker-ce --showduplicates</span>
+
+<span class="token comment"># 3 安装特定版本的docker-ce</span>
+<span class="token comment"># 必须指定--setopt=obsoletes=0，否则yum会自动安装更高版本</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># yum install --setopt=obsoletes=0 docker-ce-18.06.3.ce-3.el7 -y</span>
+
+<span class="token comment"># 4 添加一个配置文件</span>
+<span class="token comment"># Docker在默认情况下使用的Cgroup Driver为cgroupfs，而kubernetes推荐使用systemd来代替cgroupfs</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># mkdir /etc/docker</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># cat &lt;&lt;EOF &gt;  /etc/docker/daemon.json</span>
+<span class="token punctuation">{</span>
+  <span class="token string">"exec-opts"</span>: <span class="token punctuation">[</span><span class="token string">"native.cgroupdriver=systemd"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string">"registry-mirrors"</span>: <span class="token punctuation">[</span><span class="token string">"https://kn0t2bca.mirror.aliyuncs.com"</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+EOF
+
+<span class="token comment"># 5 启动docker</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl restart docker</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl enable docker</span>
+
+<span class="token comment"># 6 检查docker状态和版本</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># docker version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="安装kubernetes组件"><a href="#安装kubernetes组件" class="headerlink" title="安装kubernetes组件"></a>安装kubernetes组件</h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 由于kubernetes的镜像源在国外，速度比较慢，这里切换成国内的镜像源</span>
+<span class="token comment"># 编辑/etc/yum.repos.d/kubernetes.repo，添加下面的配置 </span>
+<span class="token namespace">[kubernetes]</span>
+name=Kubernetes
+baseurl=http:<span class="token operator">/</span><span class="token operator">/</span>mirrors<span class="token punctuation">.</span>aliyun<span class="token punctuation">.</span>com<span class="token operator">/</span>kubernetes<span class="token operator">/</span>yum<span class="token operator">/</span>repos<span class="token operator">/</span>kubernetes<span class="token operator">-</span>el7<span class="token operator">-</span>x86_64
+enabled=1
+gpgcheck=0
+repo_gpgcheck=0
+gpgkey=http:<span class="token operator">/</span><span class="token operator">/</span>mirrors<span class="token punctuation">.</span>aliyun<span class="token punctuation">.</span>com<span class="token operator">/</span>kubernetes<span class="token operator">/</span>yum<span class="token operator">/</span>doc<span class="token operator">/</span>yum<span class="token operator">-</span>key<span class="token punctuation">.</span>gpg
+       http:<span class="token operator">/</span><span class="token operator">/</span>mirrors<span class="token punctuation">.</span>aliyun<span class="token punctuation">.</span>com<span class="token operator">/</span>kubernetes<span class="token operator">/</span>yum<span class="token operator">/</span>doc<span class="token operator">/</span>rpm<span class="token operator">-</span>package<span class="token operator">-</span>key<span class="token punctuation">.</span>gpg
+
+<span class="token comment"># 安装kubeadm、kubelet和kubectl</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># yum install --setopt=obsoletes=0 kubeadm-1.17.4-0 kubelet-1.17.4-0 kubectl-1.17.4-0 -y</span>
+
+<span class="token comment"># 配置kubelet的cgroup</span>
+<span class="token comment"># 编辑/etc/sysconfig/kubelet，添加下面的配置</span>
+KUBELET_CGROUP_ARGS=<span class="token string">"--cgroup-driver=systemd"</span>
+KUBE_PROXY_MODE=<span class="token string">"ipvs"</span>
+
+<span class="token comment"># 4 设置kubelet开机自启</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># systemctl enable kubelet</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="准备集群镜像"><a href="#准备集群镜像" class="headerlink" title="准备集群镜像"></a>准备集群镜像</h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 在安装kubernetes集群之前，必须要提前准备好集群需要的镜像，所需镜像可以通过下面命令查看</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubeadm config images list</span>
+
+<span class="token comment"># 下载镜像</span>
+<span class="token comment"># 此镜像在kubernetes的仓库中,由于网络原因,无法连接，下面提供了一种替代方案</span>
+images=<span class="token punctuation">(</span>
+    kube<span class="token operator">-</span>apiserver:v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+    kube<span class="token operator">-</span>controller<span class="token operator">-</span>manager:v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+    kube<span class="token operator">-</span>scheduler:v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+    kube<span class="token operator">-</span>proxy:v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+    pause:3<span class="token punctuation">.</span>1
+    etcd:3<span class="token punctuation">.</span>4<span class="token punctuation">.</span>3<span class="token operator">-</span>0
+    coredns:1<span class="token punctuation">.</span>6<span class="token punctuation">.</span>5
+<span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> imageName in $<span class="token punctuation">{</span>images<span class="token punctuation">[</span>@<span class="token punctuation">]</span><span class="token punctuation">}</span> <span class="token punctuation">;</span> <span class="token keyword">do</span>
+	docker pull registry<span class="token punctuation">.</span>cn<span class="token operator">-</span>hangzhou<span class="token punctuation">.</span>aliyuncs<span class="token punctuation">.</span>com<span class="token operator">/</span>google_containers<span class="token operator">/</span><span class="token variable">$imageName</span>
+	docker tag registry<span class="token punctuation">.</span>cn<span class="token operator">-</span>hangzhou<span class="token punctuation">.</span>aliyuncs<span class="token punctuation">.</span>com<span class="token operator">/</span>google_containers<span class="token operator">/</span><span class="token variable">$imageName</span> 		k8s<span class="token punctuation">.</span>gcr<span class="token punctuation">.</span>io<span class="token operator">/</span><span class="token variable">$imageName</span>
+	docker rmi registry<span class="token punctuation">.</span>cn<span class="token operator">-</span>hangzhou<span class="token punctuation">.</span>aliyuncs<span class="token punctuation">.</span>com<span class="token operator">/</span>google_containers<span class="token operator">/</span><span class="token variable">$imageName</span>
+done<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="集群初始化"><a href="#集群初始化" class="headerlink" title="集群初始化"></a>集群初始化</h3><p>下面开始对集群进行初始化，并将node节点加入到集群中</p>
+<blockquote>
+<p>下面的操作只需要在<code>master</code>节点上执行即可</p>
+</blockquote>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建集群</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubeadm init \</span>
+	<span class="token operator">--</span>kubernetes<span class="token operator">-</span>version=v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4 \
+    <span class="token operator">--</span>pod<span class="token operator">-</span>network<span class="token operator">-</span>cidr=10<span class="token punctuation">.</span>244<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token operator">/</span>16 \
+    <span class="token operator">--</span>service<span class="token operator">-</span>cidr=10<span class="token punctuation">.</span>96<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token operator">/</span>12 \
+    <span class="token operator">--</span>apiserver<span class="token operator">-</span>advertise<span class="token operator">-</span>address=192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>80<span class="token punctuation">.</span>100
+
+<span class="token comment"># 创建必要文件</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># mkdir -p $HOME/.kube</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>下面的操作只需要在<code>node</code>节点上执行即可</p>
+</blockquote>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 将node节点加入集群</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubeadm join 192.168.80.100:6443 \ </span>
+	<span class="token operator">--</span>token 8507uc<span class="token punctuation">.</span>o0knircuri8etnw2 \
+	<span class="token operator">--</span>discovery<span class="token operator">-</span>token<span class="token operator">-</span>ca<span class="token operator">-</span>cert<span class="token operator">-</span>hash \
+	sha256:acc37967fb5b0acf39d7598f8a439cc7dc88f439a3f4d0c9cae88e7901b9d3f
+	
+<span class="token comment"># 查看集群状态 此时的集群状态为NotReady，这是因为还没有配置网络插件</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get nodes</span>
+NAME     STATUS     ROLES    AGE     VERSION
+master   NotReady   master   6m43s   v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+node1    NotReady   &lt;none&gt;   22s     v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+node2    NotReady   &lt;none&gt;   19s     v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="安装网络插件"><a href="#安装网络插件" class="headerlink" title="安装网络插件"></a>安装网络插件</h3><p>kubernetes支持多种网络插件，比如flannel、calico、canal等等，任选一种使用即可，本次选择flannel</p>
+<blockquote>
+<p>下面操作依旧只在<code>master</code>节点执行即可，插件使用的是DaemonSet的控制器，它会在每个节点上都运行</p>
+</blockquote>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 获取fannel的配置文件</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span>
+
+<span class="token comment"># 使用配置文件启动fannel</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl apply -f kube-flannel.yml</span>
+
+<span class="token comment"># 稍等片刻，再次查看集群节点的状态</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get nodes</span>
+NAME     STATUS   ROLES    AGE     VERSION
+master   Ready    master   15m     v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+node1    Ready    &lt;none&gt;   8m53s   v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4
+node2    Ready    &lt;none&gt;   8m50s   v1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>至此，kubernetes的集群环境搭建完成</p>
+<h2 id="服务部署"><a href="#服务部署" class="headerlink" title="服务部署"></a>服务部署</h2><p>接下来在kubernetes集群中部署一个nginx程序，测试下集群是否在正常工作。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 部署nginx</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl create deployment nginx --image=nginx:1.14-alpine</span>
+
+<span class="token comment"># 暴露端口</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl expose deployment nginx --port=80 --type=NodePort</span>
+
+<span class="token comment"># 查看服务状态</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods,service</span>
+NAME                         READY   STATUS    RESTARTS   AGE
+pod<span class="token operator">/</span>nginx<span class="token operator">-</span>86c57db685<span class="token operator">-</span>fdc2k   1<span class="token operator">/</span>1     Running   0          18m
+
+NAME                 <span class="token function">TYPE</span>        CLUSTER<span class="token operator">-</span>IP      EXTERNAL<span class="token operator">-</span>IP   PORT<span class="token punctuation">(</span>S<span class="token punctuation">)</span>        AGE
+service<span class="token operator">/</span>kubernetes   ClusterIP   10<span class="token punctuation">.</span>96<span class="token punctuation">.</span>0<span class="token punctuation">.</span>1       &lt;none&gt;        443<span class="token operator">/</span>TCP        82m
+service<span class="token operator">/</span>nginx        NodePort    10<span class="token punctuation">.</span>104<span class="token punctuation">.</span>121<span class="token punctuation">.</span>45   &lt;none&gt;        80:30073<span class="token operator">/</span>TCP   17m
+
+<span class="token comment"># 4 最后在电脑上访问下部署的nginx服务</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220907235915782.png" alt="image-20220907235915782"></p>
 
                 
             </div>
@@ -628,7 +844,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://guojunwengit.github.io/2022/09/07/kubernetes/kubernetes%E4%BB%8B%E7%BB%8D/">https://guojunwengit.github.io/2022/09/07/kubernetes/kubernetes%E4%BB%8B%E7%BB%8D/</a>
+                    <a href="https://guojunwengit.github.io/2022/09/07/kubernetes/%E4%BA%8C%E3%80%81kubernetes%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">https://guojunwengit.github.io/2022/09/07/kubernetes/%E4%BA%8C%E3%80%81kubernetes%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -843,18 +1059,18 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/09/07/kubernetes/kubernetes%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+                <a href="/2022/09/07/kubernetes/%E4%B8%89%E3%80%81kubernetes%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/kubernetes.jpeg" class="responsive-img" alt="二、kubernetes集群环境搭建">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/kubernetes.jpeg" class="responsive-img" alt="三、kubernetes资源管理">
                         
-                        <span class="card-title">二、kubernetes集群环境搭建</span>
+                        <span class="card-title">三、kubernetes资源管理</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            kubernetes集群环境搭建
+                            kubernetes资源管理
                         
                     </div>
                     <div class="publish-info">
@@ -891,30 +1107,30 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/04/11/%E4%BA%8B%E5%8A%A1/">
+                <a href="/2022/09/07/kubernetes/%E4%B8%80%E3%80%81kubernetes%E4%BB%8B%E7%BB%8D/">
                     <div class="card-image">
                         
-                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/Mysql/570b4533417273efdc971f678476898d.jpeg" class="responsive-img" alt="事务">
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/kubernetes.jpeg" class="responsive-img" alt="一、kubernetes介绍">
                         
-                        <span class="card-title">事务</span>
+                        <span class="card-title">一、kubernetes介绍</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            事务
+                            kubernetes介绍
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-11
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-07
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Mysql/" class="post-category">
-                                    Mysql
+                            <a href="/categories/kubernetes/" class="post-category">
+                                    kubernetes
                                 </a>
                             
                             
@@ -924,12 +1140,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Mysql/">
-                        <span class="chip bg-color">Mysql</span>
-                    </a>
-                    
-                    <a href="/tags/%E4%BA%8B%E5%8A%A1/">
-                        <span class="chip bg-color">事务</span>
+                    <a href="/tags/kubernetes/">
+                        <span class="chip bg-color">kubernetes</span>
                     </a>
                     
                 </div>
@@ -1073,7 +1285,7 @@
                 
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">40.8k</span>
+                        class="white-color">52.5k</span>
             
             
             

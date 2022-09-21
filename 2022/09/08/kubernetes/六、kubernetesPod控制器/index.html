@@ -1,0 +1,2237 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="六、kubernetesPod控制器, Junwen&#39;Blog">
+    <meta name="description" content="kubernetesPod控制器">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>六、kubernetesPod控制器 | Junwen&#39;Blog</title>
+    <link rel="icon" type="image/png" href="/medias/logo.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+<script src="https://v1.hitokoto.cn/?c=d&encode=js&select=%23hitokoto" defer></script>
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Junwen&#39;Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Junwen&#39;Blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/guojunwengit/guojunwengit.github.io" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/guojunwengit/guojunwengit.github.io" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/kubernetes.jpeg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">六、kubernetesPod控制器</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/kubernetes/">
+                                <span class="chip bg-color">kubernetes</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/kubernetes/" class="post-category">
+                                kubernetes
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-09-08
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2022-09-15
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    7.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    36 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Pod控制器介绍"><a href="#Pod控制器介绍" class="headerlink" title="Pod控制器介绍"></a>Pod控制器介绍</h2><p>Pod是kubernetes的最小管理单元，在kubernetes中，按照pod的创建方式可以将其分为两类：</p>
+<ul>
+<li><p>自主式pod：kubernetes直接创建出来的Pod，这种pod删除后就没有了，也不会重建</p>
+</li>
+<li><p>控制器创建的pod：kubernetes通过控制器创建的pod，这种pod删除了之后还会自动重建       </p>
+</li>
+</ul>
+<blockquote>
+<p><strong><code>什么是Pod控制器</code></strong> </p>
+<p>​    Pod控制器是管理pod的中间层，使用Pod控制器之后，只需要告诉Pod控制器，想要多少个什么样的Pod就可以了，它会创建出满足条件的Pod并确保每一个Pod资源处于用户期望的目标状态。如果Pod资源在运行中出现故障，它会基于指定策略重新编排Pod。</p>
+</blockquote>
+<p>在kubernetes中，有很多类型的pod控制器，每种都有自己的适合的场景，常见的有下面这些：</p>
+<ul>
+<li><p>ReplicationController：比较原始的pod控制器，已经被废弃，由ReplicaSet替代</p>
+</li>
+<li><p>ReplicaSet：保证副本数量一直维持在期望值，并支持pod数量扩缩容，镜像版本升级</p>
+</li>
+<li><p>Deployment：通过控制ReplicaSet来控制Pod，并支持滚动升级、回退版本</p>
+</li>
+<li><p>Horizontal Pod Autoscaler：可以根据集群负载自动水平调整Pod的数量，实现削峰填谷</p>
+</li>
+<li><p>DaemonSet：在集群中的指定Node上运行且仅运行一个副本，一般用于守护进程类的任务</p>
+</li>
+<li><p>Job：它创建出来的pod只要完成任务就立即退出，不需要重启或重建，用于执行一次性任务</p>
+</li>
+<li><p>Cronjob：它创建的Pod负责周期性任务控制，不需要持续后台运行</p>
+</li>
+<li><p>StatefulSet：管理有状态应用</p>
+</li>
+</ul>
+<h2 id="ReplicaSet-RS"><a href="#ReplicaSet-RS" class="headerlink" title="ReplicaSet(RS)"></a>ReplicaSet(RS)</h2><p>​    ReplicaSet的主要作用是<strong>保证一定数量的pod正常运行</strong>，它会持续监听这些Pod的运行状态，一旦Pod发生故障，就会重启或重建。同时它还支持对pod数量的扩缩容和镜像版本的升降级。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220915211728831.png" alt="image-20220915211728831"></p>
+<p>ReplicaSet的资源清单文件：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1 <span class="token comment"># 版本号</span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> ReplicaSet <span class="token comment"># 类型       </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment"># 元数据</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token comment"># rs名称 </span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token comment"># 所属命名空间 </span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment">#标签</span>
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> rs
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment"># 详情描述</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span> <span class="token comment"># 副本数量</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment"># 选择器，通过它指定该控制器管理哪些pod</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>      <span class="token comment"># Labels匹配规则</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">matchExpressions</span><span class="token punctuation">:</span> <span class="token comment"># Expressions匹配规则</span>
+      <span class="token punctuation">-</span> <span class="token punctuation">{</span><span class="token key atrule">key</span><span class="token punctuation">:</span> app<span class="token punctuation">,</span> <span class="token key atrule">operator</span><span class="token punctuation">:</span> In<span class="token punctuation">,</span> <span class="token key atrule">values</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>nginx<span class="token punctuation">-</span>pod<span class="token punctuation">]</span><span class="token punctuation">}</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token comment"># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.17.1
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在这里面，需要新了解的配置项就是<code>spec</code>下面几个选项：</p>
+<ul>
+<li><p>replicas：指定副本数量，其实就是当前rs创建出来的pod的数量，默认为1</p>
+</li>
+<li><p>selector：选择器，它的作用是建立pod控制器和pod之间的关联关系，采用的Label Selector机制</p>
+<p>​               在pod模板上定义label，在控制器上定义选择器，就可以表明当前控制器能管理哪些pod了</p>
+</li>
+<li><p>template：模板，就是当前控制器创建pod所使用的模板板，里面其实就是前一章学过的pod的定义</p>
+</li>
+</ul>
+<p><strong>创建ReplicaSet</strong></p>
+<p>创建pc-replicaset.yaml文件，内容如下：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> ReplicaSet   
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pc<span class="token punctuation">-</span>replicaset
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> dev
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> 
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.17.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建rs</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl create -f pc-replicaset.yaml</span>
+replicaset<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>replicaset created
+
+<span class="token comment"># 查看rs</span>
+<span class="token comment"># DESIRED:期望副本数量  </span>
+<span class="token comment"># CURRENT:当前副本数量  </span>
+<span class="token comment"># READY:已经准备好提供服务的副本数量</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs pc-replicaset -n dev -o wide</span>
+NAME          DESIRED   CURRENT READY AGE   CONTAINERS   IMAGES             SELECTOR
+pc<span class="token operator">-</span>replicaset 3         3       3     22s   nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>1       app=nginx<span class="token operator">-</span>pod
+
+<span class="token comment"># 查看当前控制器创建出来的pod</span>
+<span class="token comment"># 这里发现控制器创建出来的pod的名称是在控制器名称后面拼接了-xxxxx随机码</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pod -n dev</span>
+NAME                          READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>6vmvt   1<span class="token operator">/</span>1     Running   0          54s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>fmb8f   1<span class="token operator">/</span>1     Running   0          54s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>snrk2   1<span class="token operator">/</span>1     Running   0          54s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>扩缩容</strong></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 编辑rs的副本数量，修改spec:replicas: 6即可</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl edit rs pc-replicaset -n dev</span>
+replicaset<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>replicaset edited
+
+<span class="token comment"># 查看pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                          READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>6vmvt   1<span class="token operator">/</span>1     Running   0          114m
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>cftnp   1<span class="token operator">/</span>1     Running   0          10s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>fjlm6   1<span class="token operator">/</span>1     Running   0          10s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>fmb8f   1<span class="token operator">/</span>1     Running   0          114m
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>s2whj   1<span class="token operator">/</span>1     Running   0          10s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>snrk2   1<span class="token operator">/</span>1     Running   0          114m
+
+<span class="token comment"># 当然也可以直接使用命令实现</span>
+<span class="token comment"># 使用scale命令实现扩缩容， 后面--replicas=n直接指定目标数量即可</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl scale rs pc-replicaset --replicas=2 -n dev</span>
+replicaset<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>replicaset scaled
+
+<span class="token comment"># 命令运行完毕，立即查看，发现已经有4个开始准备退出了</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                       READY   STATUS        RESTARTS   AGE
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>6vmvt   0<span class="token operator">/</span>1     Terminating   0          118m
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>cftnp   0<span class="token operator">/</span>1     Terminating   0          4m17s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>fjlm6   0<span class="token operator">/</span>1     Terminating   0          4m17s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>fmb8f   1<span class="token operator">/</span>1     Running       0          118m
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>s2whj   0<span class="token operator">/</span>1     Terminating   0          4m17s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>snrk2   1<span class="token operator">/</span>1     Running       0          118m
+
+<span class="token comment">#稍等片刻，就只剩下2个了</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                       READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>fmb8f   1<span class="token operator">/</span>1     Running   0          119m
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>snrk2   1<span class="token operator">/</span>1     Running   0          119m<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>镜像升级</strong></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 编辑rs的容器镜像 - image: nginx:1.17.2</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl edit rs pc-replicaset -n dev</span>
+replicaset<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>replicaset edited
+
+<span class="token comment"># 再次查看，发现镜像版本已经变更了</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev -o wide</span>
+NAME                DESIRED  CURRENT   READY   AGE    CONTAINERS   IMAGES        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+pc<span class="token operator">-</span>replicaset       2        2         2       140m   nginx         nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>2  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token comment"># 同样的道理，也可以使用命令完成这个工作</span>
+<span class="token comment"># kubectl set image rs rs名称 容器=镜像版本 -n namespace</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl set image rs pc-replicaset nginx=nginx:1.17.1  -n dev</span>
+replicaset<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>replicaset image updated
+
+<span class="token comment"># 再次查看，发现镜像版本已经变更了</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev -o wide</span>
+NAME                 DESIRED  CURRENT   READY   AGE    CONTAINERS   IMAGES            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+pc<span class="token operator">-</span>replicaset        2        2         2       145m   nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>1 <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>删除ReplicaSet</strong></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 使用kubectl delete命令会删除此RS以及它管理的Pod</span>
+<span class="token comment"># 在kubernetes删除RS前，会将RS的replicasclear调整为0，等待所有的Pod被删除后，在执行RS对象的删除</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl delete rs pc-replicaset -n dev</span>
+replicaset<span class="token punctuation">.</span>apps <span class="token string">"pc-replicaset"</span> deleted
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pod -n dev -o wide</span>
+No resources found in dev namespace<span class="token punctuation">.</span>
+
+<span class="token comment"># 如果希望仅仅删除RS对象（保留Pod），可以使用kubectl delete命令时添加--cascade=false选项（不推荐）。</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl delete rs pc-replicaset -n dev --cascade=false</span>
+replicaset<span class="token punctuation">.</span>apps <span class="token string">"pc-replicaset"</span> deleted
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                  READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>cl82j   1<span class="token operator">/</span>1     Running   0          75s
+pc<span class="token operator">-</span>replicaset<span class="token operator">-</span>dslhb   1<span class="token operator">/</span>1     Running   0          75s
+
+<span class="token comment"># 也可以使用yaml直接删除(推荐)</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl delete -f pc-replicaset.yaml</span>
+replicaset<span class="token punctuation">.</span>apps <span class="token string">"pc-replicaset"</span> deleted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Deployment-Deploy"><a href="#Deployment-Deploy" class="headerlink" title="Deployment(Deploy)"></a>Deployment(Deploy)</h2><p>​    为了更好的解决服务编排的问题，kubernetes在V1.2版本开始，引入了Deployment控制器。值得一提的是，这种控制器并不直接管理pod，而是通过管理ReplicaSet来简介管理Pod，即：Deployment管理ReplicaSet，ReplicaSet管理Pod。所以Deployment比ReplicaSet功能更加强大。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220915211836579.png" alt="image-20220915211836579"></p>
+<p>Deployment主要功能有下面几个：</p>
+<ul>
+<li>支持ReplicaSet的所有功能</li>
+<li>支持发布的停止、继续</li>
+<li>支持滚动升级和回滚版本</li>
+</ul>
+<p>Deployment的资源清单文件：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1 <span class="token comment"># 版本号</span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment <span class="token comment"># 类型       </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment"># 元数据</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token comment"># rs名称 </span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token comment"># 所属命名空间 </span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment">#标签</span>
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> deploy
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment"># 详情描述</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span> <span class="token comment"># 副本数量</span>
+  <span class="token key atrule">revisionHistoryLimit</span><span class="token punctuation">:</span> <span class="token number">3</span> <span class="token comment"># 保留历史版本</span>
+  <span class="token key atrule">paused</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 暂停部署，默认是false</span>
+  <span class="token key atrule">progressDeadlineSeconds</span><span class="token punctuation">:</span> <span class="token number">600</span> <span class="token comment"># 部署超时时间（s），默认是600</span>
+  <span class="token key atrule">strategy</span><span class="token punctuation">:</span> <span class="token comment"># 策略</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> RollingUpdate <span class="token comment"># 滚动更新策略</span>
+    <span class="token key atrule">rollingUpdate</span><span class="token punctuation">:</span> <span class="token comment"># 滚动更新</span>
+      <span class="token key atrule">maxSurge</span><span class="token punctuation">:</span> 30% <span class="token comment"># 最大额外可以存在的副本数，可以为百分比，也可以为整数</span>
+      <span class="token key atrule">maxUnavailable</span><span class="token punctuation">:</span> 30% <span class="token comment"># 最大不可用状态的 Pod 的最大值，可以为百分比，也可以为整数</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment"># 选择器，通过它指定该控制器管理哪些pod</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>      <span class="token comment"># Labels匹配规则</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">matchExpressions</span><span class="token punctuation">:</span> <span class="token comment"># Expressions匹配规则</span>
+      <span class="token punctuation">-</span> <span class="token punctuation">{</span><span class="token key atrule">key</span><span class="token punctuation">:</span> app<span class="token punctuation">,</span> <span class="token key atrule">operator</span><span class="token punctuation">:</span> In<span class="token punctuation">,</span> <span class="token key atrule">values</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>nginx<span class="token punctuation">-</span>pod<span class="token punctuation">]</span><span class="token punctuation">}</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token comment"># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.17.1
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>创建deployment</strong></p>
+<p>创建pc-deployment.yaml，内容如下：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment      
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pc<span class="token punctuation">-</span>deployment
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> dev
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> 
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.17.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建deployment</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl create -f pc-deployment.yaml --record=true</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment created
+
+<span class="token comment"># 查看deployment</span>
+<span class="token comment"># UP-TO-DATE 最新版本的pod的数量</span>
+<span class="token comment"># AVAILABLE  当前可用的pod的数量</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get deploy pc-deployment -n dev</span>
+NAME            READY   UP<span class="token operator">-</span>TO<span class="token operator">-</span>DATE   AVAILABLE   AGE
+pc<span class="token operator">-</span>deployment   3<span class="token operator">/</span>3     3            3           15s
+
+<span class="token comment"># 查看rs</span>
+<span class="token comment"># 发现rs的名称是在原来deployment的名字后面添加了一个10位数的随机串</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev</span>
+NAME                       DESIRED   CURRENT   READY   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78   3         3         3       23s
+
+<span class="token comment"># 查看pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                             READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>d2c8n   1<span class="token operator">/</span>1     Running   0          107s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>smpvp   1<span class="token operator">/</span>1     Running   0          107s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>wvjd8   1<span class="token operator">/</span>1     Running   0          107s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>扩缩容</strong></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 变更副本数量为5个</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl scale deploy pc-deployment --replicas=5  -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment scaled
+
+<span class="token comment"># 查看deployment</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get deploy pc-deployment -n dev</span>
+NAME            READY   UP<span class="token operator">-</span>TO<span class="token operator">-</span>DATE   AVAILABLE   AGE
+pc<span class="token operator">-</span>deployment   5<span class="token operator">/</span>5     5            5           2m
+
+<span class="token comment"># 查看pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment">#  kubectl get pods -n dev</span>
+NAME                             READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>d2c8n   1<span class="token operator">/</span>1     Running   0          4m19s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>jxmdq   1<span class="token operator">/</span>1     Running   0          94s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>mktqv   1<span class="token operator">/</span>1     Running   0          93s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>smpvp   1<span class="token operator">/</span>1     Running   0          4m19s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>wvjd8   1<span class="token operator">/</span>1     Running   0          4m19s
+
+<span class="token comment"># 编辑deployment的副本数量，修改spec:replicas: 4即可</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl edit deploy pc-deployment -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment edited
+
+<span class="token comment"># 查看pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                             READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>d2c8n   1<span class="token operator">/</span>1     Running   0          5m23s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>jxmdq   1<span class="token operator">/</span>1     Running   0          2m38s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>smpvp   1<span class="token operator">/</span>1     Running   0          5m23s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78<span class="token operator">-</span>wvjd8   1<span class="token operator">/</span>1     Running   0          5m23s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>镜像更新</strong></p>
+<p>deployment支持两种更新策略:<code>重建更新</code>和<code>滚动更新</code>,可以通过<code>strategy</code>指定策略类型,支持两个属性:</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">strategy：指定新的Pod替换旧的Pod的策略， 支持两个属性：
+  type：指定策略类型，支持两种策略
+    Recreate：在创建出新的Pod之前会先杀掉所有已存在的Pod
+    RollingUpdate：滚动更新，就是杀死一部分，就启动一部分，在更新过程中，存在两个版本Pod
+  rollingUpdate：当type为RollingUpdate时生效，用于为RollingUpdate设置参数，支持两个属性：
+    maxUnavailable：用来指定在升级过程中不可用Pod的最大数量，默认为25%。
+    maxSurge： 用来指定在升级过程中可以超过期望的Pod的最大数量，默认为25%。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>重建更新</p>
+<ol>
+<li>编辑pc-deployment.yaml,在spec节点下添加更新策略</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">strategy</span><span class="token punctuation">:</span> <span class="token comment"># 策略</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> Recreate <span class="token comment"># 重建更新</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>创建deploy进行验证</li>
+</ol>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 变更镜像</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl set image deployment pc-deployment nginx=nginx:1.17.2 -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment image updated
+
+<span class="token comment"># 观察升级过程</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment">#  kubectl get pods -n dev -w</span>
+NAME                             READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>65qcw   1<span class="token operator">/</span>1     Running   0          31s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>w5nzv   1<span class="token operator">/</span>1     Running   0          31s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>xpt7w   1<span class="token operator">/</span>1     Running   0          31s
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>xpt7w   1<span class="token operator">/</span>1     Terminating   0          41s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>65qcw   1<span class="token operator">/</span>1     Terminating   0          41s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>w5nzv   1<span class="token operator">/</span>1     Terminating   0          41s
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>grn8z   0<span class="token operator">/</span>1     Pending       0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>hbl4v   0<span class="token operator">/</span>1     Pending       0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>67nz2   0<span class="token operator">/</span>1     Pending       0          0s
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>grn8z   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>hbl4v   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>67nz2   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>grn8z   1<span class="token operator">/</span>1     Running             0          1s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>67nz2   1<span class="token operator">/</span>1     Running             0          1s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b<span class="token operator">-</span>hbl4v   1<span class="token operator">/</span>1     Running             0          2s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>滚动更新</p>
+<ol>
+<li>编辑pc-deployment.yaml,在spec节点下添加更新策略</li>
+</ol>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">strategy</span><span class="token punctuation">:</span> <span class="token comment"># 策略</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> RollingUpdate <span class="token comment"># 滚动更新策略</span>
+    <span class="token key atrule">rollingUpdate</span><span class="token punctuation">:</span>
+      <span class="token key atrule">maxSurge</span><span class="token punctuation">:</span> 25% 
+      <span class="token key atrule">maxUnavailable</span><span class="token punctuation">:</span> 25%<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>创建deploy进行验证</li>
+</ol>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 变更镜像</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl set image deployment pc-deployment nginx=nginx:1.17.3 -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment image updated
+
+<span class="token comment"># 观察升级过程</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev -w</span>
+NAME                           READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>8rbzt   1<span class="token operator">/</span>1     Running   0          31m
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>h4p68   1<span class="token operator">/</span>1     Running   0          31m
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>hlmz4   1<span class="token operator">/</span>1     Running   0          31m
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>rrqcn   1<span class="token operator">/</span>1     Running   0          31m
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>226rx   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>226rx   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>226rx   1<span class="token operator">/</span>1     Running             0          1s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>h4p68    0<span class="token operator">/</span>1     Terminating         0          34m
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>cnd44   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>cnd44   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>cnd44   1<span class="token operator">/</span>1     Running             0          2s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>hlmz4    0<span class="token operator">/</span>1     Terminating         0          34m
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>px48p   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>px48p   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>px48p   1<span class="token operator">/</span>1     Running             0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>8rbzt    0<span class="token operator">/</span>1     Terminating         0          34m
+
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>dkmqp   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>dkmqp   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44<span class="token operator">-</span>dkmqp   1<span class="token operator">/</span>1     Running             0          2s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767<span class="token operator">-</span>rrqcn    0<span class="token operator">/</span>1     Terminating         0          34m
+
+<span class="token comment"># 至此，新版本的pod创建完毕，就版本的pod销毁完毕</span>
+<span class="token comment"># 中间过程是滚动进行的，也就是边销毁边创建</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>滚动更新的过程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220915211902596.png" alt="image-20220915211902596"></p>
+<p>镜像更新中rs的变化:</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 查看rs,发现原来的rs的依旧存在，只是pod数量变为了0，而后又新产生了一个rs，pod数量为4</span>
+<span class="token comment"># 其实这就是deployment能够进行版本回退的奥妙所在，后面会详细解释</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev</span>
+NAME                       DESIRED   CURRENT   READY   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78   0         0         0       7m37s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b11   0         0         0       5m37s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d76789   4         4         4       72s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>版本回退</strong></p>
+<p>deployment支持版本升级过程中的暂停、继续功能以及版本回退等诸多功能，下面具体来看.</p>
+<p>kubectl rollout： 版本升级相关功能，支持下面的选项：</p>
+<ul>
+<li><p>status       显示当前升级状态</p>
+</li>
+<li><p>history     显示 升级历史记录</p>
+</li>
+<li><p>pause       暂停版本升级过程</p>
+</li>
+<li><p>resume    继续已经暂停的版本升级过程</p>
+</li>
+<li><p>restart      重启版本升级过程</p>
+</li>
+<li><p>undo        回滚到上一级版本（可以使用–to-revision回滚到指定版本）</p>
+</li>
+</ul>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 查看当前升级版本的状态</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl rollout status deploy pc-deployment -n dev</span>
+deployment <span class="token string">"pc-deployment"</span> successfully rolled out
+
+<span class="token comment"># 查看升级历史记录</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl rollout history deploy pc-deployment -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment
+REVISION  CHANGE<span class="token operator">-</span>CAUSE
+1         kubectl create <span class="token operator">--</span>filename=pc<span class="token operator">-</span>deployment<span class="token punctuation">.</span>yaml <span class="token operator">--</span>record=true
+2         kubectl create <span class="token operator">--</span>filename=pc<span class="token operator">-</span>deployment<span class="token punctuation">.</span>yaml <span class="token operator">--</span>record=true
+3         kubectl create <span class="token operator">--</span>filename=pc<span class="token operator">-</span>deployment<span class="token punctuation">.</span>yaml <span class="token operator">--</span>record=true
+<span class="token comment"># 可以发现有三次版本记录，说明完成过两次升级</span>
+
+<span class="token comment"># 版本回滚</span>
+<span class="token comment"># 这里直接使用--to-revision=1回滚到了1版本， 如果省略这个选项，就是回退到上个版本，就是2版本</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl rollout undo deployment pc-deployment --to-revision=1 -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment rolled back
+
+<span class="token comment"># 查看发现，通过nginx镜像版本可以发现到了第一版</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get deploy -n dev -o wide</span>
+NAME            READY   UP<span class="token operator">-</span>TO<span class="token operator">-</span>DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         
+pc<span class="token operator">-</span>deployment   4<span class="token operator">/</span>4     4            4           74m   nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>1   
+
+<span class="token comment"># 查看rs，发现第一个rs中有4个pod运行，后面两个版本的rs中pod为运行</span>
+<span class="token comment"># 其实deployment之所以可是实现版本的回滚，就是通过记录下历史rs来实现的，</span>
+<span class="token comment"># 一旦想回滚到哪个版本，只需要将当前版本pod数量降为0，然后将回滚版本的pod提升为目标数量就可以了</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev</span>
+NAME                       DESIRED   CURRENT   READY   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6696798b78   4         4         4       78m
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>966bf7f44    0         0         0       37m
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>c848d767     0         0         0       71m<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>金丝雀发布</strong></p>
+<p>​    Deployment控制器支持控制更新过程中的控制，如“暂停(pause)”或“继续(resume)”更新操作。</p>
+<p>​    比如有一批新的Pod资源创建完成后立即暂停更新过程，此时，仅存在一部分新版本的应用，主体部分还是旧的版本。然后，再筛选一小部分的用户请求路由到新版本的Pod应用，继续观察能否稳定地按期望的方式运行。确定没问题之后再继续完成余下的Pod资源滚动更新，否则立即回滚更新操作。这就是所谓的金丝雀发布。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 更新deployment的版本，并配置暂停deployment</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment">#  kubectl set image deploy pc-deployment nginx=nginx:1.17.4 -n dev &amp;&amp; kubectl rollout pause deployment pc-deployment  -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment image updated
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment paused
+
+<span class="token comment">#观察更新状态</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl rollout status deploy pc-deployment -n dev　</span>
+Waiting <span class="token keyword">for</span> deployment <span class="token string">"pc-deployment"</span> rollout to finish: 2 out of 4 new replicas have been updated<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token comment"># 监控更新的过程，可以看到已经新增了一个资源，但是并未按照预期的状态去删除一个旧的资源，就是因为使用了pause暂停命令</span>
+
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev -o wide</span>
+NAME                       DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES         
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9   3         3         3       19m     nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>1   
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b   0         0         0       14m     nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>2   
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb   2         2         2       3m16s   nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4   
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                             READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>rj8sq   1<span class="token operator">/</span>1     Running   0          7m33s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>ttwgg   1<span class="token operator">/</span>1     Running   0          7m35s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9<span class="token operator">-</span>v4wvc   1<span class="token operator">/</span>1     Running   0          7m34s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb<span class="token operator">-</span>996rt   1<span class="token operator">/</span>1     Running   0          3m31s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb<span class="token operator">-</span>j2gtj   1<span class="token operator">/</span>1     Running   0          3m31s
+
+<span class="token comment"># 确保更新的pod没问题了，继续更新</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl rollout resume deploy pc-deployment -n dev</span>
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>deployment resumed
+
+<span class="token comment"># 查看最后的更新情况</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get rs -n dev -o wide</span>
+NAME                       DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES         
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>5d89bdfbf9   0         0         0       21m     nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>1   
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>675d469f8b   0         0         0       16m     nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>2   
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb   4         4         4       5m11s   nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>4   
+
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+NAME                             READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb<span class="token operator">-</span>7bfwh   1<span class="token operator">/</span>1     Running   0          37s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb<span class="token operator">-</span>996rt   1<span class="token operator">/</span>1     Running   0          5m27s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb<span class="token operator">-</span>j2gtj   1<span class="token operator">/</span>1     Running   0          5m27s
+pc<span class="token operator">-</span>deployment<span class="token operator">-</span>6c9f56fcfb<span class="token operator">-</span>rf84v   1<span class="token operator">/</span>1     Running   0          37s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>删除Deployment</strong></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 删除deployment，其下的rs和pod也将被删除</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl delete -f pc-deployment.yaml</span>
+deployment<span class="token punctuation">.</span>apps <span class="token string">"pc-deployment"</span> deleted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Horizontal-Pod-Autoscaler-HPA"><a href="#Horizontal-Pod-Autoscaler-HPA" class="headerlink" title="Horizontal Pod Autoscaler(HPA)"></a>Horizontal Pod Autoscaler(HPA)</h2><p>​    在前面的课程中，我们已经可以实现通过手工执行<code>kubectl scale</code>命令实现Pod扩容或缩容，但是这显然不符合Kubernetes的定位目标–自动化、智能化。 Kubernetes期望可以实现通过监测Pod的使用情况，实现pod数量的自动调整，于是就产生了Horizontal Pod Autoscaler（HPA）这种控制器。</p>
+<p>​    HPA可以获取每个Pod利用率，然后和HPA中定义的指标进行对比，同时计算出需要伸缩的具体值，最后实现Pod的数量的调整。其实HPA与之前的Deployment一样，也属于一种Kubernetes资源对象，它通过追踪分析RC控制的所有目标Pod的负载变化情况，来确定是否需要针对性地调整目标Pod的副本数，这是HPA的实现原理。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220915211932036.png" alt="image-20220915211932036"></p>
+<p>接下来，我们来做一个实验</p>
+<p><strong>1 安装metrics-server</strong></p>
+<p>metrics-server可以用来收集集群中的资源使用情况</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 安装git</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># yum install git -y</span>
+<span class="token comment"># 获取metrics-server, 注意使用的版本</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># git clone -b v0.3.6 https://github.com/kubernetes-incubator/metrics-server</span>
+<span class="token comment"># 修改deployment, 注意修改的是镜像和初始化参数</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># cd /root/metrics-server/deploy/1.8+/</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># vim metrics-server-deployment.yaml</span>
+按图中添加下面选项
+hostNetwork: true
+image: registry<span class="token punctuation">.</span>cn<span class="token operator">-</span>hangzhou<span class="token punctuation">.</span>aliyuncs<span class="token punctuation">.</span>com<span class="token operator">/</span>google_containers<span class="token operator">/</span>metrics<span class="token operator">-</span>server<span class="token operator">-</span>amd64:v0<span class="token punctuation">.</span>3<span class="token punctuation">.</span>6
+args:
+<span class="token operator">-</span> <span class="token operator">--</span>kubelet<span class="token operator">-</span>insecure<span class="token operator">-</span>tls
+<span class="token operator">-</span> <span class="token operator">--</span>kubelet<span class="token operator">-</span>preferred<span class="token operator">-</span>address<span class="token operator">-</span>types=InternalIP<span class="token punctuation">,</span>Hostname<span class="token punctuation">,</span>InternalDNS<span class="token punctuation">,</span>ExternalDNS<span class="token punctuation">,</span>ExternalIP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="assets/image-20200608163326496.png" alt="image-20200608163326496"></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 安装metrics-server</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl apply -f ./</span>
+
+<span class="token comment"># 查看pod运行情况</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl get pod -n kube-system</span>
+metrics<span class="token operator">-</span>server<span class="token operator">-</span>6b976979db<span class="token operator">-</span>2xwbj   1<span class="token operator">/</span>1     Running   0          90s
+
+<span class="token comment"># 使用kubectl top node 查看资源使用情况</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl top node</span>
+NAME     CPU<span class="token punctuation">(</span>cores<span class="token punctuation">)</span>   CPU<span class="token operator">%</span>   MEMORY<span class="token punctuation">(</span>bytes<span class="token punctuation">)</span>   MEMORY<span class="token operator">%</span>
+master   98m          4<span class="token operator">%</span>     1067Mi          62<span class="token operator">%</span>
+node1    27m          1<span class="token operator">%</span>     727Mi           42<span class="token operator">%</span>
+node2    34m          1<span class="token operator">%</span>     800Mi           46<span class="token operator">%</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl top pod -n kube-system</span>
+NAME                              CPU<span class="token punctuation">(</span>cores<span class="token punctuation">)</span>   MEMORY<span class="token punctuation">(</span>bytes<span class="token punctuation">)</span>
+coredns<span class="token operator">-</span>6955765f44<span class="token operator">-</span>7ptsb          3m           9Mi
+coredns<span class="token operator">-</span>6955765f44<span class="token operator">-</span>vcwr5          3m           8Mi
+etcd<span class="token operator">-</span>master                       14m          145Mi
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token comment"># 至此,metrics-server安装完成</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>2 准备deployment和servie</strong></p>
+<p>为了操作简单,直接使用命令</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建deployment </span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl run nginx --image=nginx:latest --requests=cpu=100m -n dev</span>
+<span class="token comment"># 创建service</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl expose deployment nginx --type=NodePort --port=80 -n dev</span>
+
+<span class="token comment"># 查看</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl get deployment,pod,svc -n dev</span>
+NAME                    READY   UP<span class="token operator">-</span>TO<span class="token operator">-</span>DATE   AVAILABLE   AGE
+deployment<span class="token punctuation">.</span>apps<span class="token operator">/</span>nginx   1<span class="token operator">/</span>1     1            1           96s
+
+NAME                         READY   STATUS    RESTARTS   AGE
+pod<span class="token operator">/</span>nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>pq8tb   1<span class="token operator">/</span>1     Running   0          96s
+
+NAME            <span class="token function">TYPE</span>       CLUSTER<span class="token operator">-</span>IP     EXTERNAL<span class="token operator">-</span>IP   PORT<span class="token punctuation">(</span>S<span class="token punctuation">)</span>        AGE
+service<span class="token operator">/</span>nginx   NodePort   10<span class="token punctuation">.</span>96<span class="token punctuation">.</span>87<span class="token punctuation">.</span>135   &lt;none&gt;        80:31986<span class="token operator">/</span>TCP   9s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>3 部署HPA</strong></p>
+<p>创建pc-hpa.yaml</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> autoscaling/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> HorizontalPodAutoscaler
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pc<span class="token punctuation">-</span>hpa
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> dev
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">minReplicas</span><span class="token punctuation">:</span> <span class="token number">1</span>  <span class="token comment">#最小pod数量</span>
+  <span class="token key atrule">maxReplicas</span><span class="token punctuation">:</span> <span class="token number">10</span> <span class="token comment">#最大pod数量</span>
+  <span class="token key atrule">targetCPUUtilizationPercentage</span><span class="token punctuation">:</span> <span class="token number">3</span> <span class="token comment"># CPU使用率指标</span>
+  <span class="token key atrule">scaleTargetRef</span><span class="token punctuation">:</span>   <span class="token comment"># 指定要控制的nginx信息</span>
+    <span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+    <span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment  
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建hpa</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl create -f pc-hpa.yaml</span>
+horizontalpodautoscaler<span class="token punctuation">.</span>autoscaling<span class="token operator">/</span>pc<span class="token operator">-</span>hpa created
+
+<span class="token comment"># 查看hpa</span>
+<span class="token namespace">[root@master 1.8+]</span><span class="token comment"># kubectl get hpa -n dev</span>
+NAME     REFERENCE          TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   0%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        1          62s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>4 测试</strong></p>
+<p>使用压测工具对service地址<code>192.168.108.100:31986</code>进行压测，然后通过控制台查看hpa和pod的变化</p>
+<p><code>hpa变化</code></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get hpa -n dev -w</span>
+NAME     REFERENCE          TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   0%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        1          4m11s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   0%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        1          5m19s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   22%<span class="token operator">/</span>3<span class="token operator">%</span>    1         10        1          6m50s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   22%<span class="token operator">/</span>3<span class="token operator">%</span>    1         10        4          7m5s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   22%<span class="token operator">/</span>3<span class="token operator">%</span>    1         10        8          7m21s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   6%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        8          7m51s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   0%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        8          9m6s
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   0%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        8          13m
+pc<span class="token operator">-</span>hpa   Deployment<span class="token operator">/</span>nginx   0%<span class="token operator">/</span>3<span class="token operator">%</span>     1         10        1          14m<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>deployment变化</code></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get deployment -n dev -w</span>
+NAME    READY   UP<span class="token operator">-</span>TO<span class="token operator">-</span>DATE   AVAILABLE   AGE
+nginx   1<span class="token operator">/</span>1     1            1           11m
+nginx   1<span class="token operator">/</span>4     1            1           13m
+nginx   1<span class="token operator">/</span>4     1            1           13m
+nginx   1<span class="token operator">/</span>4     1            1           13m
+nginx   1<span class="token operator">/</span>4     4            1           13m
+nginx   1<span class="token operator">/</span>8     4            1           14m
+nginx   1<span class="token operator">/</span>8     4            1           14m
+nginx   1<span class="token operator">/</span>8     4            1           14m
+nginx   1<span class="token operator">/</span>8     8            1           14m
+nginx   2<span class="token operator">/</span>8     8            2           14m
+nginx   3<span class="token operator">/</span>8     8            3           14m
+nginx   4<span class="token operator">/</span>8     8            4           14m
+nginx   5<span class="token operator">/</span>8     8            5           14m
+nginx   6<span class="token operator">/</span>8     8            6           14m
+nginx   7<span class="token operator">/</span>8     8            7           14m
+nginx   8<span class="token operator">/</span>8     8            8           15m
+nginx   8<span class="token operator">/</span>1     8            8           20m
+nginx   8<span class="token operator">/</span>1     8            8           20m
+nginx   1<span class="token operator">/</span>1     1            1           20m<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>pod变化</code></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev -w</span>
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>bh8dr   1<span class="token operator">/</span>1     Running   0          11m
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>cpgrv   0<span class="token operator">/</span>1     Pending   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>8zhwk   0<span class="token operator">/</span>1     Pending   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>rr9bn   0<span class="token operator">/</span>1     Pending   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>cpgrv   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>8zhwk   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>rr9bn   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>m9gsj   0<span class="token operator">/</span>1     Pending             0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>g56qb   0<span class="token operator">/</span>1     Pending             0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>sl9c6   0<span class="token operator">/</span>1     Pending             0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>fgst7   0<span class="token operator">/</span>1     Pending             0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>g56qb   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>m9gsj   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>sl9c6   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>fgst7   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>8zhwk   1<span class="token operator">/</span>1     Running             0          19s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>rr9bn   1<span class="token operator">/</span>1     Running             0          30s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>m9gsj   1<span class="token operator">/</span>1     Running             0          21s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>cpgrv   1<span class="token operator">/</span>1     Running             0          47s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>sl9c6   1<span class="token operator">/</span>1     Running             0          33s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>g56qb   1<span class="token operator">/</span>1     Running             0          48s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>fgst7   1<span class="token operator">/</span>1     Running             0          66s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>fgst7   1<span class="token operator">/</span>1     Terminating         0          6m50s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>8zhwk   1<span class="token operator">/</span>1     Terminating         0          7m5s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>cpgrv   1<span class="token operator">/</span>1     Terminating         0          7m5s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>g56qb   1<span class="token operator">/</span>1     Terminating         0          6m50s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>rr9bn   1<span class="token operator">/</span>1     Terminating         0          7m5s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>m9gsj   1<span class="token operator">/</span>1     Terminating         0          6m50s
+nginx<span class="token operator">-</span>7df9756ccc<span class="token operator">-</span>sl9c6   1<span class="token operator">/</span>1     Terminating         0          6m50s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="DaemonSet-DS"><a href="#DaemonSet-DS" class="headerlink" title="DaemonSet(DS)"></a>DaemonSet(DS)</h2><p>​    DaemonSet类型的控制器可以保证在集群中的每一台（或指定）节点上都运行一个副本。一般适用于日志收集、节点监控等场景。也就是说，如果一个Pod提供的功能是节点级别的（每个节点都需要且只需要一个），那么这类Pod就适合使用DaemonSet类型的控制器创建。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/image-20220915221355234.png" alt="image-20220915221355234"></p>
+<p>DaemonSet控制器的特点：</p>
+<ul>
+<li>每当向集群中添加一个节点时，指定的 Pod 副本也将添加到该节点上</li>
+<li>当节点从集群中移除时，Pod 也就被垃圾回收了</li>
+</ul>
+<p>下面先来看下DaemonSet的资源清单文件</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1 <span class="token comment"># 版本号</span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> DaemonSet <span class="token comment"># 类型       </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment"># 元数据</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token comment"># rs名称 </span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token comment"># 所属命名空间 </span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment">#标签</span>
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> daemonset
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment"># 详情描述</span>
+  <span class="token key atrule">revisionHistoryLimit</span><span class="token punctuation">:</span> <span class="token number">3</span> <span class="token comment"># 保留历史版本</span>
+  <span class="token key atrule">updateStrategy</span><span class="token punctuation">:</span> <span class="token comment"># 更新策略</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> RollingUpdate <span class="token comment"># 滚动更新策略</span>
+    <span class="token key atrule">rollingUpdate</span><span class="token punctuation">:</span> <span class="token comment"># 滚动更新</span>
+      <span class="token key atrule">maxUnavailable</span><span class="token punctuation">:</span> <span class="token number">1</span> <span class="token comment"># 最大不可用状态的 Pod 的最大值，可以为百分比，也可以为整数</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment"># 选择器，通过它指定该控制器管理哪些pod</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>      <span class="token comment"># Labels匹配规则</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">matchExpressions</span><span class="token punctuation">:</span> <span class="token comment"># Expressions匹配规则</span>
+      <span class="token punctuation">-</span> <span class="token punctuation">{</span><span class="token key atrule">key</span><span class="token punctuation">:</span> app<span class="token punctuation">,</span> <span class="token key atrule">operator</span><span class="token punctuation">:</span> In<span class="token punctuation">,</span> <span class="token key atrule">values</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>nginx<span class="token punctuation">-</span>pod<span class="token punctuation">]</span><span class="token punctuation">}</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token comment"># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.17.1
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>创建pc-daemonset.yaml，内容如下：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> DaemonSet      
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pc<span class="token punctuation">-</span>daemonset
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> dev
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> 
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>1.17.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建daemonset</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl create -f  pc-daemonset.yaml</span>
+daemonset<span class="token punctuation">.</span>apps<span class="token operator">/</span>pc<span class="token operator">-</span>daemonset created
+
+<span class="token comment"># 查看daemonset</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment">#  kubectl get ds -n dev -o wide</span>
+NAME        DESIRED  CURRENT  READY  UP<span class="token operator">-</span>TO<span class="token operator">-</span>DATE  AVAILABLE   AGE   CONTAINERS   IMAGES         
+pc<span class="token operator">-</span>daemonset   2        2        2      2           2        24s   nginx        nginx:1<span class="token punctuation">.</span>17<span class="token punctuation">.</span>1   
+
+<span class="token comment"># 查看pod,发现在每个Node上都运行一个pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment">#  kubectl get pods -n dev -o wide</span>
+NAME                 READY   STATUS    RESTARTS   AGE   IP            NODE    
+pc<span class="token operator">-</span>daemonset<span class="token operator">-</span>9bck8   1<span class="token operator">/</span>1     Running   0          37s   10<span class="token punctuation">.</span>244<span class="token punctuation">.</span>1<span class="token punctuation">.</span>43   node1     
+pc<span class="token operator">-</span>daemonset<span class="token operator">-</span>k224w   1<span class="token operator">/</span>1     Running   0          37s   10<span class="token punctuation">.</span>244<span class="token punctuation">.</span>2<span class="token punctuation">.</span>74   node2      
+
+<span class="token comment"># 删除daemonset</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl delete -f pc-daemonset.yaml</span>
+daemonset<span class="token punctuation">.</span>apps <span class="token string">"pc-daemonset"</span> deleted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h2><p>Job，主要用于负责**批量处理(一次要处理指定数量任务)<strong>短暂的</strong>一次性(每个任务仅运行一次就结束)**任务。Job特点如下：</p>
+<ul>
+<li>当Job创建的pod执行成功结束时，Job将记录成功结束的pod数量</li>
+<li>当成功结束的pod达到指定的数量时，Job将完成执行</li>
+</ul>
+<img src="assets/image-20200618213054113.png" style="zoom:80%;">
+
+<p>Job的资源清单文件：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> batch/v1 <span class="token comment"># 版本号</span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Job <span class="token comment"># 类型       </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment"># 元数据</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token comment"># rs名称 </span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token comment"># 所属命名空间 </span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment">#标签</span>
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> job
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment"># 详情描述</span>
+  <span class="token key atrule">completions</span><span class="token punctuation">:</span> <span class="token number">1</span> <span class="token comment"># 指定job需要成功运行Pods的次数。默认值: 1</span>
+  <span class="token key atrule">parallelism</span><span class="token punctuation">:</span> <span class="token number">1</span> <span class="token comment"># 指定job在任一时刻应该并发运行Pods的数量。默认值: 1</span>
+  <span class="token key atrule">activeDeadlineSeconds</span><span class="token punctuation">:</span> <span class="token number">30</span> <span class="token comment"># 指定job可运行的时间期限，超过时间还未结束，系统将会尝试进行终止。</span>
+  <span class="token key atrule">backoffLimit</span><span class="token punctuation">:</span> <span class="token number">6</span> <span class="token comment"># 指定job失败后进行重试的次数。默认是6</span>
+  <span class="token key atrule">manualSelector</span><span class="token punctuation">:</span> <span class="token boolean important">true</span> <span class="token comment"># 是否可以使用selector选择器选择pod，默认是false</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment"># 选择器，通过它指定该控制器管理哪些pod</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>      <span class="token comment"># Labels匹配规则</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> counter<span class="token punctuation">-</span>pod
+    <span class="token key atrule">matchExpressions</span><span class="token punctuation">:</span> <span class="token comment"># Expressions匹配规则</span>
+      <span class="token punctuation">-</span> <span class="token punctuation">{</span><span class="token key atrule">key</span><span class="token punctuation">:</span> app<span class="token punctuation">,</span> <span class="token key atrule">operator</span><span class="token punctuation">:</span> In<span class="token punctuation">,</span> <span class="token key atrule">values</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>counter<span class="token punctuation">-</span>pod<span class="token punctuation">]</span><span class="token punctuation">}</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token comment"># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> counter<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">restartPolicy</span><span class="token punctuation">:</span> Never <span class="token comment"># 重启策略只能设置为Never或者OnFailure</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> counter
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox<span class="token punctuation">:</span><span class="token number">1.30</span>
+        <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 2;done"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">关于重启策略设置的说明：
+    如果指定为OnFailure，则job会在pod出现故障时重启容器，而不是创建pod，failed次数不变
+    如果指定为Never，则job会在pod出现故障时创建新的pod，并且故障pod不会消失，也不会重启，failed次数加1
+    如果指定为Always的话，就意味着一直重启，意味着job任务会重复去执行了，当然不对，所以不能设置为Always<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>创建pc-job.yaml，内容如下：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> batch/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Job      
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pc<span class="token punctuation">-</span>job
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> dev
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">manualSelector</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> counter<span class="token punctuation">-</span>pod
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> counter<span class="token punctuation">-</span>pod
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">restartPolicy</span><span class="token punctuation">:</span> Never
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> counter
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox<span class="token punctuation">:</span><span class="token number">1.30</span>
+        <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 3;done"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建job</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl create -f pc-job.yaml</span>
+job<span class="token punctuation">.</span>batch<span class="token operator">/</span>pc<span class="token operator">-</span>job created
+
+<span class="token comment"># 查看job</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get job -n dev -o wide  -w</span>
+NAME     COMPLETIONS   DURATION   AGE   CONTAINERS   IMAGES         SELECTOR
+pc<span class="token operator">-</span>job   0<span class="token operator">/</span>1           21s        21s   counter      busybox:1<span class="token punctuation">.</span>30   app=counter<span class="token operator">-</span>pod
+pc<span class="token operator">-</span>job   1<span class="token operator">/</span>1           31s        79s   counter      busybox:1<span class="token punctuation">.</span>30   app=counter<span class="token operator">-</span>pod
+
+<span class="token comment"># 通过观察pod状态可以看到，pod在运行完毕任务后，就会变成Completed状态</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev -w</span>
+NAME           READY   STATUS     RESTARTS      AGE
+pc<span class="token operator">-</span>job<span class="token operator">-</span>rxg96   1<span class="token operator">/</span>1     Running     0            29s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>rxg96   0<span class="token operator">/</span>1     Completed   0            33s
+
+<span class="token comment"># 接下来，调整下pod运行的总数量和并行数量 即：在spec下设置下面两个选项</span>
+<span class="token comment">#  completions: 6 # 指定job需要成功运行Pods的次数为6</span>
+<span class="token comment">#  parallelism: 3 # 指定job并发运行Pods的数量为3</span>
+<span class="token comment">#  然后重新运行job，观察效果，此时会发现，job会每次运行3个pod，总共执行了6个pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev -w</span>
+NAME           READY   STATUS    RESTARTS   AGE
+pc<span class="token operator">-</span>job<span class="token operator">-</span>684ft   1<span class="token operator">/</span>1     Running   0          5s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>jhj49   1<span class="token operator">/</span>1     Running   0          5s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>pfcvh   1<span class="token operator">/</span>1     Running   0          5s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>684ft   0<span class="token operator">/</span>1     Completed   0          11s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>v7rhr   0<span class="token operator">/</span>1     Pending     0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>v7rhr   0<span class="token operator">/</span>1     Pending     0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>v7rhr   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>jhj49   0<span class="token operator">/</span>1     Completed           0          11s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>fhwf7   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>fhwf7   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>pfcvh   0<span class="token operator">/</span>1     Completed           0          11s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>5vg2j   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>fhwf7   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>5vg2j   0<span class="token operator">/</span>1     Pending             0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>5vg2j   0<span class="token operator">/</span>1     ContainerCreating   0          0s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>fhwf7   1<span class="token operator">/</span>1     Running             0          2s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>v7rhr   1<span class="token operator">/</span>1     Running             0          2s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>5vg2j   1<span class="token operator">/</span>1     Running             0          3s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>fhwf7   0<span class="token operator">/</span>1     Completed           0          12s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>v7rhr   0<span class="token operator">/</span>1     Completed           0          12s
+pc<span class="token operator">-</span>job<span class="token operator">-</span>5vg2j   0<span class="token operator">/</span>1     Completed           0          12s
+
+<span class="token comment"># 删除job</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl delete -f pc-job.yaml</span>
+job<span class="token punctuation">.</span>batch <span class="token string">"pc-job"</span> deleted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="CronJob-CJ"><a href="#CronJob-CJ" class="headerlink" title="CronJob(CJ)"></a>CronJob(CJ)</h2><p>​    CronJob控制器以Job控制器资源为其管控对象，并借助它管理pod资源对象，Job控制器定义的作业任务在其控制器资源创建之后便会立即执行，但CronJob可以以类似于Linux操作系统的周期性任务作业计划的方式控制其运行<strong>时间点</strong>及<strong>重复运行</strong>的方式。也就是说，<strong>CronJob可以在特定的时间点(反复的)去运行job任务</strong>。</p>
+<img src="assets/image-20200618213149531.png" style="zoom:80%;">
+
+<p>CronJob的资源清单文件：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> batch/v1beta1 <span class="token comment"># 版本号</span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> CronJob <span class="token comment"># 类型       </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment"># 元数据</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> <span class="token comment"># rs名称 </span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> <span class="token comment"># 所属命名空间 </span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment">#标签</span>
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> cronjob
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment"># 详情描述</span>
+  <span class="token key atrule">schedule</span><span class="token punctuation">:</span> <span class="token comment"># cron格式的作业调度运行时间点,用于控制任务在什么时间执行</span>
+  <span class="token key atrule">concurrencyPolicy</span><span class="token punctuation">:</span> <span class="token comment"># 并发执行策略，用于定义前一次作业运行尚未完成时是否以及如何运行后一次的作业</span>
+  <span class="token key atrule">failedJobHistoryLimit</span><span class="token punctuation">:</span> <span class="token comment"># 为失败的任务执行保留的历史记录数，默认为1</span>
+  <span class="token key atrule">successfulJobHistoryLimit</span><span class="token punctuation">:</span> <span class="token comment"># 为成功的任务执行保留的历史记录数，默认为3</span>
+  <span class="token key atrule">startingDeadlineSeconds</span><span class="token punctuation">:</span> <span class="token comment"># 启动作业错误的超时时长</span>
+  <span class="token key atrule">jobTemplate</span><span class="token punctuation">:</span> <span class="token comment"># job控制器模板，用于为cronjob控制器生成job对象;下面其实就是job的定义</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">completions</span><span class="token punctuation">:</span> <span class="token number">1</span>
+      <span class="token key atrule">parallelism</span><span class="token punctuation">:</span> <span class="token number">1</span>
+      <span class="token key atrule">activeDeadlineSeconds</span><span class="token punctuation">:</span> <span class="token number">30</span>
+      <span class="token key atrule">backoffLimit</span><span class="token punctuation">:</span> <span class="token number">6</span>
+      <span class="token key atrule">manualSelector</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+      <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+        <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+          <span class="token key atrule">app</span><span class="token punctuation">:</span> counter<span class="token punctuation">-</span>pod
+        <span class="token key atrule">matchExpressions</span><span class="token punctuation">:</span> 规则
+          <span class="token punctuation">-</span> <span class="token punctuation">{</span><span class="token key atrule">key</span><span class="token punctuation">:</span> app<span class="token punctuation">,</span> <span class="token key atrule">operator</span><span class="token punctuation">:</span> In<span class="token punctuation">,</span> <span class="token key atrule">values</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>counter<span class="token punctuation">-</span>pod<span class="token punctuation">]</span><span class="token punctuation">}</span>
+      <span class="token key atrule">template</span><span class="token punctuation">:</span>
+        <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+          <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+            <span class="token key atrule">app</span><span class="token punctuation">:</span> counter<span class="token punctuation">-</span>pod
+        <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+          <span class="token key atrule">restartPolicy</span><span class="token punctuation">:</span> Never 
+          <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> counter
+            <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox<span class="token punctuation">:</span><span class="token number">1.30</span>
+            <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 20;done"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">需要重点解释的几个选项：
+schedule: cron表达式，用于指定任务的执行时间
+	<span class="token italic"><span class="token punctuation">*</span><span class="token content">/1    </span><span class="token punctuation">*</span></span>      <span class="token italic"><span class="token punctuation">*</span><span class="token content">    </span><span class="token punctuation">*</span></span>     *
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>分钟</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>小时</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>日</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>月份</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>星期</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token code keyword">    分钟 值从 0 到 59.
+    小时 值从 0 到 23.
+    日 值从 1 到 31.
+    月 值从 1 到 12.
+    星期 值从 0 到 6, 0 代表星期日
+    多个时间可以用逗号隔开； 范围可以用连字符给出；*可以作为通配符； /表示每...</span>
+concurrencyPolicy:
+	Allow:   允许Jobs并发运行(默认)
+	Forbid:  禁止并发运行，如果上一次运行尚未完成，则跳过下一次运行
+	Replace: 替换，取消当前正在运行的作业并用新作业替换它<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>创建pc-cronjob.yaml，内容如下：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> batch/v1beta1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> CronJob
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> pc<span class="token punctuation">-</span>cronjob
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> dev
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+    <span class="token key atrule">controller</span><span class="token punctuation">:</span> cronjob
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">schedule</span><span class="token punctuation">:</span> <span class="token string">"*/1 * * * *"</span>
+  <span class="token key atrule">jobTemplate</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">template</span><span class="token punctuation">:</span>
+        <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+          <span class="token key atrule">restartPolicy</span><span class="token punctuation">:</span> Never
+          <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> counter
+            <span class="token key atrule">image</span><span class="token punctuation">:</span> busybox<span class="token punctuation">:</span><span class="token number">1.30</span>
+            <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"bin/sh"</span><span class="token punctuation">,</span><span class="token string">"-c"</span><span class="token punctuation">,</span><span class="token string">"for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 3;done"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 创建cronjob</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl create -f pc-cronjob.yaml</span>
+cronjob<span class="token punctuation">.</span>batch<span class="token operator">/</span>pc<span class="token operator">-</span>cronjob created
+
+<span class="token comment"># 查看cronjob</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get cronjobs -n dev</span>
+NAME         SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+pc<span class="token operator">-</span>cronjob   <span class="token operator">*</span><span class="token operator">/</span>1 <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span>   False     0        &lt;none&gt;          6s
+
+<span class="token comment"># 查看job</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get jobs -n dev</span>
+NAME                    COMPLETIONS   DURATION   AGE
+pc<span class="token operator">-</span>cronjob<span class="token operator">-</span>1592587800   1<span class="token operator">/</span>1           28s        3m26s
+pc<span class="token operator">-</span>cronjob<span class="token operator">-</span>1592587860   1<span class="token operator">/</span>1           28s        2m26s
+pc<span class="token operator">-</span>cronjob<span class="token operator">-</span>1592587920   1<span class="token operator">/</span>1           28s        86s
+
+<span class="token comment"># 查看pod</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl get pods -n dev</span>
+pc<span class="token operator">-</span>cronjob<span class="token operator">-</span>1592587800<span class="token operator">-</span>x4tsm   0<span class="token operator">/</span>1     Completed   0          2m24s
+pc<span class="token operator">-</span>cronjob<span class="token operator">-</span>1592587860<span class="token operator">-</span>r5gv4   0<span class="token operator">/</span>1     Completed   0          84s
+pc<span class="token operator">-</span>cronjob<span class="token operator">-</span>1592587920<span class="token operator">-</span>9dxxq   1<span class="token operator">/</span>1     Running     0          24s
+
+
+<span class="token comment"># 删除cronjob</span>
+<span class="token namespace">[root@master ~]</span><span class="token comment"># kubectl  delete -f pc-cronjob.yaml</span>
+cronjob<span class="token punctuation">.</span>batch <span class="token string">"pc-cronjob"</span> deleted<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Junwen</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://guojunwengit.github.io/2022/09/08/kubernetes/%E5%85%AD%E3%80%81kubernetesPod%E6%8E%A7%E5%88%B6%E5%99%A8/">https://guojunwengit.github.io/2022/09/08/kubernetes/%E5%85%AD%E3%80%81kubernetesPod%E6%8E%A7%E5%88%B6%E5%99%A8/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Junwen</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/kubernetes/">
+                                    <span class="chip bg-color">kubernetes</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/09/08/kubernetes/%E4%BA%94%E3%80%81kubernetesPod%E8%AF%A6%E8%A7%A3/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/kubernetes.jpeg" class="responsive-img" alt="五、kubernetesPod详解">
+                        
+                        <span class="card-title">五、kubernetesPod详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            kubernetesPod详解
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-08
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/kubernetes/" class="post-category">
+                                    kubernetes
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/kubernetes/">
+                        <span class="chip bg-color">kubernetes</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/09/08/kubernetes/%E5%9B%9B%E3%80%81kubernetes%E5%AE%9E%E6%88%98%E5%85%A5%E9%97%A8/">
+                    <div class="card-image">
+                        
+                        <img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/kubernetes/kubernetes.jpeg" class="responsive-img" alt="四、kubernetes实战入门">
+                        
+                        <span class="card-title">四、kubernetes实战入门</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            kubernetes实战入门
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/kubernetes/" class="post-category">
+                                    kubernetes
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/kubernetes/">
+                        <span class="chip bg-color">kubernetes</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+          
+                
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">52.5k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2021";
+                        var startMonth = "11";
+                        var startDate = "20";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            //document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + todayHour + ' 小时 ' + todayMinute + ' 分钟 ' + todaySecond + ' 秒';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            //document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天 ' + todayHour + ' 小时 ' + todayMinute + ' 分钟 ' + todaySecond + ' 秒';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    
+
+                    calcSiteTime();
+                </script>
+            
+            &copy;
+            
+                <span id="year">2021-2022</span>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/guojunwengit" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1647797846@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1647797846" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1647797846" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":true}});</script></body>
+
+</html>
