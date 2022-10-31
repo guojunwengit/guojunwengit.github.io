@@ -4,6 +4,89 @@
   
     
     <entry>
+      <title>Docker安装Centos7并开启ssh</title>
+      <link href="/2022/10/31/docker/Docker%E5%AE%89%E8%A3%85Centos7/"/>
+      <url>/2022/10/31/docker/Docker%E5%AE%89%E8%A3%85Centos7/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Docker安装Centos7并开启ssh"><a href="#Docker安装Centos7并开启ssh" class="headerlink" title="Docker安装Centos7并开启ssh"></a>Docker安装Centos7并开启ssh</h1><p>后台启动centos7容器，指定容器名字为centos7，并把docker上centos的22<a href="https://so.csdn.net/so/search?q=%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84&amp;spm=1001.2101.3001.7020">端口映射</a>到本机8082端口(端口号可以自己指定)</p><pre class="line-numbers language-none"><code class="language-none">docker run -it -d -p 8082:22 --name=centos7 --privileged centos:7 /usr/sbin/init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>进入到Centos7容器</p><pre class="line-numbers language-none"><code class="language-none">docker exec -it centos7  /bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/docker/image-20221031230409703.png" alt="image-20221031230409703"></p><p>安装ssh服务和网络必须软件</p><pre class="line-numbers language-none"><code class="language-none">yum install net-tools.x86_64 -yyum install -y openssh-server<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>安装完后重启SSH服务</p><pre class="line-numbers language-none"><code class="language-none">systemctl restart sshd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p> 设置root用户密码</p><pre class="line-numbers language-none"><code class="language-none">passwd -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="https://cdn.jsdelivr.net/gh/guojunwengit/images/docker/image-20221031230105688.png" alt="image-20221031230105688"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>42.接雨水</title>
+      <link href="/2022/09/24/leetcode_hot100/34-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/"/>
+      <url>/2022/09/24/leetcode_hot100/34-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h3 id="42-接雨水"><a href="#42-接雨水" class="headerlink" title="42.接雨水"></a>42.接雨水</h3><p>给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。</p><p>如果数组中不存在目标值 target，返回&nbsp;[-1, -1]。</p><p>你必须设计并实现时间复杂度为&nbsp;O(log n)&nbsp;的算法解决此问题。</p><p><a href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/</a></p><h3 id="思路与算法"><a href="#思路与算法" class="headerlink" title="思路与算法"></a>思路与算法</h3><p>使用二分查找找出target出现的第一个位置，如果整个数组都小于target 查找target的位置会出现在n，其它不存在情况都可以直接访问数组进行判断。<br>target的结束位置就是找到第一个大于target的数，直接查找target+1即可,当大于targe的数不存在时，二分查找返回的是nums的长度n,n-1就是数组的最后一个元素，直接返回即可。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> leetcode </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> leetcode </tag>
+            
+            <tag> golang </tag>
+            
+            <tag> 二分查找 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>42.接雨水</title>
+      <link href="/2022/09/21/leetcode_hot100/42-%E6%8E%A5%E9%9B%A8%E6%B0%B4/"/>
+      <url>/2022/09/21/leetcode_hot100/42-%E6%8E%A5%E9%9B%A8%E6%B0%B4/</url>
+      
+        <content type="html"><![CDATA[<h3 id="42-接雨水"><a href="#42-接雨水" class="headerlink" title="42.接雨水"></a>42.接雨水</h3><p>给定 <code>n</code> 个非负整数表示每个宽度为 <code>1</code> 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p><p><a href="https://leetcode.cn/problems/trapping-rain-water/">https://leetcode.cn/problems/trapping-rain-water/</a></p><h3 id="思路与算法"><a href="#思路与算法" class="headerlink" title="思路与算法"></a>思路与算法</h3><p>leftMax记录左边最高柱子的高度，rightMax记录右边最高柱子的高度，默认从0和n-1开始，leftMax</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> leetcode </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> leetcode </tag>
+            
+            <tag> golang </tag>
+            
+            <tag> 双向指针 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>七、kubernetesService详解</title>
       <link href="/2022/09/20/kubernetes/%E4%B8%83%E3%80%81kubernetesService%E8%AF%A6%E8%A7%A3%20/"/>
       <url>/2022/09/20/kubernetes/%E4%B8%83%E3%80%81kubernetesService%E8%AF%A6%E8%A7%A3%20/</url>
